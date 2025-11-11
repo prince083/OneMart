@@ -2,8 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react"
 import axios from 'axios'
 import { authDataContext } from "./authContext";
 import { UserDataContext } from "./userContext";
-import { set } from "mongoose";
-import Product from "../../../backend/model/productModel";
 
 
 
