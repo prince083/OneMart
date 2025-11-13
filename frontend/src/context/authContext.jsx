@@ -6,7 +6,7 @@ import { createContext,
 export const authDataContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    let serverUrl = "http://localhost:8000";
+    let serverUrl = "https://onemart-nu7w.onrender.com";
     let value = { serverUrl };
     return ( 
         <authDataContext.Provider value={value}>
