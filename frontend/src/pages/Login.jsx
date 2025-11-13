@@ -1,5 +1,5 @@
 import Logo from '../assets/vcart-logo.png'
-import GoogleLogo from '../assets/Google-logo.png'
+import GoogleLogo from '../assets/Google-Logo.png'
 import { useState,
     useEffect,
     useContext } from 'react';
