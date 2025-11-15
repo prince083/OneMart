@@ -20,6 +20,8 @@ app.use(cors({
     'http://localhost:5174'
   ], // Update with your frontend URL
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
 // added after getting error

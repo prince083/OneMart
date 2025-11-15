@@ -34,12 +34,21 @@ export const register = async (req, res) => {
         });
         await newUser.save();
         const token = generateToken(newUser._id);
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: "none",
+        //     maxAge: 24 * 60 * 60 * 1000, // 1 day
+        // })
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        })
+            secure: true,          // REQUIRED on HTTPS
+            sameSite: "none",      // REQUIRED for cross-domain
+            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000
+        });
+
         return res.status(201).json({
             msg: "User registered successfully",
             user: {
@@ -75,12 +84,21 @@ export const login = async (req, res) => {
             return res.status(400).json({ msg: "Invalid credentials" });
         }
         const token = generateToken(user._id);
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: "none",
+        //     maxAge: 24 * 60 * 60 * 1000,
+        // });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            secure: true,          // REQUIRED on HTTPS
+            sameSite: "none",      // REQUIRED for cross-domain
+            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000
         });
+
         return res.status(200).json({
             msg: "User logged in successfully",
             user: {
@@ -120,12 +138,21 @@ export const googleLogin = async (req, res) => {
             })
         }
         const token = generateToken(user._id);
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: "none",
+        //     maxAge: 24 * 60 * 60 * 1000,
+        // });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true, //or condition for googlesign
-            sameSite: "none",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            secure: true,          // REQUIRED on HTTPS
+            sameSite: "none",      // REQUIRED for cross-domain
+            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000
         });
+
         return res.status(200).json({
             msg: "User logged in successfully"
         });
