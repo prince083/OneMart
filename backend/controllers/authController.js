@@ -44,7 +44,6 @@ export const register = async (req, res) => {
             httpOnly: true,
             secure: true,          // REQUIRED on HTTPS
             sameSite: "none",      // REQUIRED for cross-domain
-            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
@@ -94,7 +93,6 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: true,          // REQUIRED on HTTPS
             sameSite: "none",      // REQUIRED for cross-domain
-            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
@@ -148,7 +146,6 @@ export const googleLogin = async (req, res) => {
             httpOnly: true,
             secure: true,          // REQUIRED on HTTPS
             sameSite: "none",      // REQUIRED for cross-domain
-            domain: "onemart-nu7w.onrender.com",  // << IMPORTANT!
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
