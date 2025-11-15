@@ -10,7 +10,8 @@ const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "onemart-e2876.firebaseapp.com",
   projectId: "onemart-e2876",
-  storageBucket: "onemart-e2876.firebasestorage.app",
+  // storageBucket: "onemart-e2876.firebasestorage.app",
+  storageBucket: "onemart-e2876.appspot.com",
   messagingSenderId: "1043438926556",
   appId: "1:1043438926556:web:1f77d4fccdcc3d221fd219"
 };
