@@ -36,8 +36,8 @@ export const register = async (req, res) => {
         const token = generateToken(newUser._id);
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: true,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         })
         return res.status(201).json({
@@ -77,8 +77,8 @@ export const login = async (req, res) => {
         const token = generateToken(user._id);
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: true,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
         return res.status(200).json({
@@ -122,7 +122,7 @@ export const googleLogin = async (req, res) => {
         const token = generateToken(user._id);
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false || true, //or condition for googlesign
+            secure: true, //or condition for googlesign
             sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
