@@ -115,8 +115,9 @@ export const logout = (req, res) => {
     try {
         res.clearCookie("token", {
         httpOnly: true,
-        secure: false,   // must match the login cookie
-        sameSite: "strict",
+        secure: true,   // must match the login cookie
+        sameSite: "none",
+        path: "/"
         });
         return res.status(200).json({ msg: "User logged out successfully" });
     } catch (error) {
