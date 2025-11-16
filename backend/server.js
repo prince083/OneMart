@@ -17,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+console.log("🔥 CORS middleware LOADED");
 
 // ⭐ FINAL WORKING CORS MIDDLEWARE (Only this — no cors())
 const allowedOrigins = [
