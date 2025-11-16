@@ -51,8 +51,13 @@ const Login = () => {
             }, { withCredentials: true });
             console.log("Google sign-in successful:", result.data);
             toast.success("Google Login Successful!");
-            await getCurrentUser();
-            navigate("/");
+            // 🔥 WAIT FOR COOKIE TO SYNC
+            const ok = await getCurrentUser();
+            if (ok) {
+              navigate("/");
+            } else {
+              toast.error("Session failed. Login again.");
+            }
         } catch (error) {
             console.error("Error during Google sign-in:", error);
             toast.error('Google Login Failed. Please try again.');
