@@ -26,11 +26,28 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
-// added after getting error
 app.use((req, res, next) => {
+  const allowedOrigins = [
+    "https://onemart-ecom.vercel.app",
+    "https://onemart-admindashboard.vercel.app",
+    "http://localhost:5174",
+    "http://localhost:5173",
+  ];
+
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // <- IMPORTANT
+  }
+
   next();
 });
 
