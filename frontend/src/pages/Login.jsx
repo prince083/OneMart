@@ -51,7 +51,7 @@ const Login = () => {
             }, { withCredentials: true });
             console.log("Google sign-in successful:", result.data);
             toast.success("Google Login Successful!");
-            getCurrentUser();
+            await getCurrentUser();
             navigate("/");
         } catch (error) {
             console.error("Error during Google sign-in:", error);
