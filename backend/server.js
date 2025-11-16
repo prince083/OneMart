@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: ['https://onemart-ecom.vercel.app',
+    'https://onemart-admindashboard.vercel.app',
     'http://localhost:5174',
     'http://localhost:5173'
   ], // Update with your frontend URL
