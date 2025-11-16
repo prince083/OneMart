@@ -14,7 +14,7 @@ import { UserDataContext } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext';
 import { shopDataContext } from '../context/shopContext';
-import { toast } from 'react-hot-toast';
+import { toast } from 'react-toastify';
 
 
 function Nav() {
