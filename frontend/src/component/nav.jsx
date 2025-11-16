@@ -14,10 +14,11 @@ import { UserDataContext } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext';
 import { shopDataContext } from '../context/shopContext';
+import { toast } from 'react-hot-toast';
 
 
 function Nav() {
-    let { getCurrentUser, userData } = useContext(UserDataContext);
+    let { getCurrentUser, userData, setUserData } = useContext(UserDataContext);
     let { serverUrl } = useContext(authDataContext);
     let navigate = useNavigate();
     let { showSearch, setShowSearch, search, setSearch,getCartCount} = useContext(shopDataContext);
@@ -29,7 +30,10 @@ function Nav() {
                 { withCredentials: true, }
             )
             console.log(result.data);
-            getCurrentUser();
+            // getCurrentUser();
+            setUserData(null);
+            navigate("/login");
+            toast.success("Logged out successfully");
         } catch (error) {
             console.log(error);
         }
