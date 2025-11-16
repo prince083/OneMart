@@ -113,12 +113,19 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     try {
+        // 1️⃣ Clear cookie with SAME SETTINGS as login
         res.clearCookie("token", {
-        httpOnly: true,
-        secure: true,   // must match the login cookie
-        sameSite: "none",
-        path: "/"
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            path: "/",
         });
+
+        // 2️⃣ Force Chrome to immediately delete cookie
+        res.setHeader(
+            "Set-Cookie",
+            "token=; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=0"
+        );
         return res.status(200).json({ msg: "User logged out successfully" });
     } catch (error) {
         console.log('logout error')
