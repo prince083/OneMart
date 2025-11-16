@@ -175,10 +175,11 @@ export const adminLogin = async (req, res) => {
     
             const token = genTokenAdmin(email);
             res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax", // work with localhost
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+                httpOnly: true,
+                secure: true,          // REQUIRED on HTTPS
+                sameSite: "none",      // REQUIRED for cross-domain
+                path: "/",
+                maxAge: 24 * 60 * 60 * 1000
             });
             return res.status(200).json({
                 msg: "User logged in successfully"
