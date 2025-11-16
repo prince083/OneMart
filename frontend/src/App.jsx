@@ -34,7 +34,7 @@ function App() {
 
           <Route path="/login" element={userData ? (<Navigate to={location.state?.from || '/'} />) : (<Login />)} />
 
-          <Route path="/" element={userData ? <Home /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="/about" element={userData ? <About /> : <Navigate to='/login' state={{from:location.pathname}} />} />
           
