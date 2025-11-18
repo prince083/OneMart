@@ -164,8 +164,10 @@ export const adminLogin = async (req, res) => {
             const token = genTokenAdmin(email);
             res.cookie("token", token, {
                 httpOnly: true,
-                secure: true,          // REQUIRED on HTTPS
-                sameSite: "none",      // REQUIRED for cross-domain
+                // secure: true,          // REQUIRED on HTTPS
+                // sameSite: "none",      // REQUIRED for cross-domain
+                secure: isProduction, // only https in production
+                sameSite: isProduction ? "none" : "lax", // localhost lax
                 path: "/",
                 maxAge: 24 * 60 * 60 * 1000
             });
