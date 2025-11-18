@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-
+const isProduction = process.env.NODE_ENV === "production";
 
 export const register = async (req, res) => {
     try {
@@ -34,16 +34,12 @@ export const register = async (req, res) => {
         });
         await newUser.save();
         const token = generateToken(newUser._id);
-        // res.cookie("token", token, {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: "none",
-        //     maxAge: 24 * 60 * 60 * 1000, // 1 day
-        // })
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,          // REQUIRED on HTTPS
-            sameSite: "none",      // REQUIRED for cross-domain
+            // secure: true,          // REQUIRED on HTTPS
+            // sameSite: "none",      // REQUIRED for cross-domain/
+            secure: isProduction, // only https in production
+            sameSite: isProduction ? "none" : "lax", // localhost lax
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
@@ -83,16 +79,12 @@ export const login = async (req, res) => {
             return res.status(400).json({ msg: "Invalid credentials" });
         }
         const token = generateToken(user._id);
-        // res.cookie("token", token, {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: "none",
-        //     maxAge: 24 * 60 * 60 * 1000,
-        // });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,          // REQUIRED on HTTPS
-            sameSite: "none",      // REQUIRED for cross-domain
+            // secure: true,          // REQUIRED on HTTPS
+            // sameSite: "none",      // REQUIRED for cross-domain
+            secure: isProduction, // only https in production
+            sameSite: isProduction ? "none" : "lax", // localhost lax
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
@@ -144,16 +136,12 @@ export const googleLogin = async (req, res) => {
             })
         }
         const token = generateToken(user._id);
-        // res.cookie("token", token, {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: "none",
-        //     maxAge: 24 * 60 * 60 * 1000,
-        // });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,          // REQUIRED on HTTPS
-            sameSite: "none",      // REQUIRED for cross-domain
+            // secure: true,          // REQUIRED on HTTPS
+            // sameSite: "none",      // REQUIRED for cross-domain
+            secure: isProduction, // only https in production
+            sameSite: isProduction ? "none" : "lax", // localhost lax
             path: "/",
             maxAge: 24 * 60 * 60 * 1000
         });
