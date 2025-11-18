@@ -51,7 +51,7 @@ function Nav() {
                 <h1 className='text-5.5 text-black
                 font-sans font-bold'>OneMart</h1>
             </div>
-            <div className='w-[50%] lg-w-[40%] hidden md:flex'>
+            <div className='w-[50%] lg-w-[50%] hidden md:flex'>
                 <ul className='flex items-center justify-center
                 gap-4.5 text-white'>
 

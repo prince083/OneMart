@@ -14,8 +14,8 @@ function Card({image, id, name, price }){
             onClick={()=>{navigate(`/productdetail/${id}`)}}>
                 <img src={image} alt=""
                 className="w-[1005] h-[80%] rounded-sm object-cover" />
-                <div className="text-[#c3f6fa] text-[18px] py-[10px] overflow-hidden">{name}</div>
-                <div className="text-[#f3fafa] text-[14px]">{currency}{price}</div>
+                <div className="text-[#1A1A1A] text-[18px] py-[10px] overflow-hidden">{name}</div>
+                <div className="text-[#003366] text-[14px]">{currency}{price}</div>
             </div>
         </>
     )

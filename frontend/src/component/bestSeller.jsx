@@ -19,7 +19,7 @@ function BestSeller() {
         <>
             <div className="h-[8%] w-[100%] text-center mt-[50px]">
                 <Title text1={"BEST"} text2={"SELLER"}/>
-                <p className="w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-blue-100">Tested, Loved, Tried Discover Our ALL-Time Best Sellers.</p>
+                <p className="w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-[#003366]">Tested, Loved, Tried Discover Our ALL-Time Best Sellers.</p>
             </div>
             <div className="w-[100%] h-[50%] mt-[30px] flex items-center justify-center flex-wrap gap-[50px]">
                 {bestSeller.map((item, index)=>(
