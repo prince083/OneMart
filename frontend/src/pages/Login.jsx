@@ -67,7 +67,7 @@ const Login = () => {
 
     return (
         <>
-            <div className="w-[100%] max-h-fit bg-blue-950 pb-10">
+            <div className="w-[100%] nax--h-fit bg-gradient-to-l from-blue-300 to-blue-100  pb-10">
                 <div className='flex justify-start items-center gap-3 hover:cursor-pointer
                 p-3' onClick={() => navigate('/')}>
                     <img className=" w-[50px] h-[50px]" src={Logo} alt="" />
@@ -75,16 +75,16 @@ const Login = () => {
                 </div>
 
                 <div className='flex flex-col justify-center items-center gap-3 mt-10'>
-                    <h1 className='text-white font-sans text-3xl font-bold'>Login to Your Account</h1>
-                    <p className='text-white font-sans'>Login with your email and password</p>
+                    <h1 className='text-blue-950 font-sans text-3xl font-bold'>Login to Your Account</h1>
+                    <p className='text-blue-950 font-sans'>Login with your email and password</p>
                 </div>
                 <div className='max-w-[450px] w-[60%] max-h-fit bg-white border-1 rounded-lg border-gray-300
-                backdrop:blur-2xl shadow-lg mt-8 mx-auto px-5 py-8 flex flex-col'>
+                backdrop:blur-2xl shadow-lg mt-8 mx-auto px-10 py-8 flex flex-col'>
                     <form onSubmit={handleLogin}
-                        className='flex flex-col justify-center items-center gap-3 mt-8 relative'>
+                        className='flex flex-col justify-center gap-3 mt-8 relative'>
                         <label>
                             <p className='font-sans text-gray-600 font-semibold'>Email</p>
-                            <input className='w-[300px] h-[40px] border-1 border-gray-300 rounded-md
+                            <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                         outline-none px-2 hover:bg-gray-100'
                                 type="email"
                                 required
@@ -93,7 +93,7 @@ const Login = () => {
                         </label>
                         <label>
                             <p className='font-sans text-gray-600 font-semibold'>Password</p>
-                            <input className='w-[300px] h-[40px] border-1 border-gray-300 rounded-md
+                            <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                         outline-none px-2 hover:bg-gray-100 relative'
                                 type={showPassword ? "text" : "password"}
                                 required
@@ -104,14 +104,14 @@ const Login = () => {
                             {showPassword ? <FaEyeSlash className='absolute right-5 top-30 transform -translate-y-1/2 text-gray-600'
                                 onClick={() => setShowPassword(false)} /> : null}
                         </label>
-                        <button className='w-[300px] h-[40px] bg-blue-950 text-white font-sans
+                        <button className='w-[100%] h-[40px] bg-blue-950 text-white font-sans
                     rounded-md hover:bg-blue-800'>Login</button>
                         <p className='font-sans text-gray-600'>Don't have an account?
                             <span className='text-blue-950 font-semibold hover:cursor-pointer'
                                 onClick={() => navigate('/register')}> Register</span></p>
 
-                        <hr className='w-[300px] border-1 border-gray-300 my-4' />
-                        <button className='w-[300px] h-[40px] text-white font-sans
+                        <hr className='w-[100%] border-1 border-gray-300 my-4' />
+                        <button className='w-100% h-[40px] text-white font-sans
                     rounded-md border-1 border-gray-300 cursor-pointer hover:bg-gray-100 flex justify-center items-center gap-3'
                                 onClick={handleGoogleLogin}>
                             <img src={GoogleLogo}

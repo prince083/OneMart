@@ -87,7 +87,7 @@ function Ai() {
         setActiveAi(false);
     }
     return (
-        <div className='fixed bottom-[5%] left-[2%]'
+        <div className='fixed bottom-[2%] right-[2%]'
         onClick={()=>{
             recognition.start();
             openSound.play();
@@ -96,11 +96,11 @@ function Ai() {
             <img
                 src={ai}
                 alt=""
-                className={`w-[100px] cursor-pointer ${activeAi ? 'translate-x-[10%] translate-y-[-10%] scale-125 rounded-full border-2 border-green-500' : 'translate-x-[0] translate-y-[0] scale-100 rounded-full border-2 border-white'} transition-transform`}
+                className={`w-[93px] cursor-pointer ${activeAi ? 'translate-x-[10%] translate-y-[-10%] scale-125 rounded-full border-2 border-green-500' : 'translate-x-[0] translate-y-[0] scale-100 rounded-full border-2 border-white'} transition-transform`}
                 style={{
                     filter: activeAi
                         ? "drop-shadow(0px 0px 30px green)"
-                        : "drop-shadow(0px 0px 20px black)"
+                        : ""
                 }}
             />
         </div>

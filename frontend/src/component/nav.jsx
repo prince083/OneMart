@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext';
 import { shopDataContext } from '../context/shopContext';
 import { toast } from 'react-toastify';
+import Ai from './ai';
 
 
 function Nav() {
@@ -51,7 +52,7 @@ function Nav() {
                 <h1 className='text-5.5 text-black
                 font-sans font-bold'>OneMart</h1>
             </div>
-            <div className='w-[50%] lg-w-[50%] hidden md:flex'>
+            <div className='w-[50%] lg-w-[40%] hidden md:flex'>
                 <ul className='flex items-center justify-center
                 gap-4.5 text-white'>
 
@@ -142,36 +143,39 @@ function Nav() {
                 </ul>
             </div>}
 
-            <div className='w-[100vw] h-[90px] flex items-center
+            <div className='w-[75vw] h-[70px] flex items-center
             justify-between px-[20px] text-[12px]
-            fixed bottom-0 left-0 bg-[#191818] md:hidden'>
-                <button className='text-white flex items-center
+            fixed bottom-6 bg-[#ecfafaec] md:hidden shadow-black rounded-full
+            shadow-md z-10'>
+                <button className='text-black flex items-center
                 justify-center flex-col gap-[2px]'
                 onClick={()=>{navigate("/")}}>
-                    <IoMdHome className='w-[25px] h-[25px] text-[white] md:hidden' />
+                    <IoMdHome className='w-[25px] h-[25px] text-[black] md:hidden' />
                     Home
                 </button>
-                <button className='text-white flex items-center
+                <button className='text-black flex items-center
                 justify-center flex-col gap-[2px]'
                 onClick={()=>{navigate("/collection")}}>
-                    <BiCollection className='w-[25px] h-[25px] text-[white] md:hidden' />
+                    <BiCollection className='w-[25px] h-[25px] text-[black] md:hidden' />
                     Collections
                 </button>
-                <button className='text-white flex items-center
+                <button className='text-black flex items-center
                 justify-center flex-col gap-[2px]'
                 onClick={()=>{navigate("/contact")}}>
-                    <MdContacts className='w-[25px] h-[25px] text-[white] md:hidden' />
+                    <MdContacts className='w-[25px] h-[25px] text-[black] md:hidden' />
                     Contact
                 </button>
-                <button className='text-white flex items-center
+                <button className='text-black flex items-center
                 justify-center flex-col gap-[2px]'
                 onClick={()=>{navigate("/cart")}}>
-                    <MdOutlineShoppingCart className='w-[25px] h-[25px] text-[white] md:hidden' />
+                    <MdOutlineShoppingCart className='w-[25px] h-[25px] text-[black] md:hidden' />
                     Cart
                 </button>
-                <p className='absolute w-[18px] h-[18px] flex items-center justify-center bg-white px-[5px] py-[2px] text-black font-semibold rounded-full text-[9px] top-[8px] right-[18px]'>
+                <p className='absolute w-[18px] h-[18px] flex items-center justify-center bg-black px-[5px] py-[2px] text-white font-semibold rounded-full text-[9px] top-[8px] right-[18px]'>
                     {getCartCount()}
                 </p>
+
+                <Ai />
 
             </div>
 

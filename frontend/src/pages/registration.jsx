@@ -57,7 +57,7 @@ const Registration = () => {
 
   return (
     <>
-        <div className="w-[100%] max-h-fit bg-blue-950 pb-10">
+        <div className="w-[100%] max-h-fit bg-gradient-to-l from-blue-300 to-blue-100 pb-10">
             <div className='flex justify-start items-center gap-3 hover:cursor-pointer
             p-3' onClick={() => navigate('/')}>
                 <img className=" w-[50px] h-[50px]" src={Logo} alt="" />
@@ -65,16 +65,16 @@ const Registration = () => {
             </div>
 
             <div className='flex flex-col justify-center items-center gap-3 mt-10'>
-                <h1 className='text-white font-sans text-3xl font-bold'>Create Account</h1>
-                <p className='text-white font-sans'>Register with your email and password</p>
+                <h1 className='text-blue-950 font-sans text-3xl font-bold'>Create Account</h1>
+                <p className='text-blue-950 font-sans'>Register with your email and password</p>
             </div>
             <div className='max-w-[450px] w-[60%] h-[500px] bg-white border-1 rounded-lg border-gray-300
-            backdrop:blur-2xl shadow-lg mt-8 mx-auto px-5 flex flex-col'>
+            backdrop:blur-2xl shadow-lg mt-8 mx-auto px-8 flex flex-col'>
                   <form onSubmit={handleRegister}
-                        className='flex flex-col justify-center items-center gap-3 mt-8 relative'>
+                        className='flex flex-col justify-center gap-3 mt-8 relative'>
                       <label>
                           <p className='font-sans text-gray-600 font-semibold'>Full Name</p>
-                          <input className='w-[300px] h-[40px] border-1 border-gray-300 rounded-md
+                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100'
                                 type="text"
                                 required
@@ -83,7 +83,7 @@ const Registration = () => {
                       </label>
                       <label>
                           <p className='font-sans text-gray-600 font-semibold'>Email</p>
-                          <input className='w-[300px] h-[40px] border-1 border-gray-300 rounded-md
+                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100'
                                 type="email"
                                 required
@@ -92,7 +92,7 @@ const Registration = () => {
                       </label>
                       <label>
                           <p className='font-sans text-gray-600 font-semibold'>Password</p>
-                          <input className='w-[300px] h-[40px] border-1 border-gray-300 rounded-md
+                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100 relative'
                                 type={showPassword ? "text" : "password"}
                                 required
@@ -103,14 +103,14 @@ const Registration = () => {
                             {showPassword ? <FaEyeSlash className='absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-600'
                             onClick={() => setShowPassword(false)} /> : null}
                       </label>
-                      <button className='w-[300px] h-[40px] bg-blue-950 text-white font-sans
+                      <button className='w-[100%] h-[40px] bg-blue-950 text-white font-sans
                 rounded-md hover:bg-blue-800'>Register</button>
                       <p className='font-sans text-gray-600'>Already have an account?
                           <span className='text-blue-950 font-semibold hover:cursor-pointer'
                               onClick={() => navigate('/login')}> Login</span></p>
 
-                      <hr className='w-[300px] border-1 border-gray-300 my-4'/>
-                      <button className='w-[300px] h-[40px] text-white font-sans
+                      <hr className='w-[100%] border-1 border-gray-300 my-4'/>
+                      <button className='w-[100%] h-[40px] text-white font-sans
                 rounded-md border-1 border-gray-300 cursor-pointer hover:bg-gray-100 flex justify-center items-center gap-3'
                               onClick={handleGoogleSignup}>
                         <img src={GoogleLogo}
