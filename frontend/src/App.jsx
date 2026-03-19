@@ -26,35 +26,35 @@ function App() {
 
   return (
     <>
-        <ToastContainer />
-        {<Nav />}
-        <Routes>
+      <ToastContainer />
+      {<Nav />}
+      <Routes>
 
-          <Route path="/register" element={userData ? (<Navigate to={location.state?.from || '/'} />) : (<Register />)} />
+        <Route path="/register" element={userData ? (<Navigate to={location.state?.from || '/'} />) : (<Register />)} />
 
-          <Route path="/login" element={userData ? (<Navigate to={location.state?.from || '/'} />) : (<Login />)} />
+        <Route path="/login" element={userData ? (<Navigate to={location.state?.from || '/'} />) : (<Login />)} />
 
-          <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
 
-          <Route path="/about" element={userData ? <About /> : <Navigate to='/login' state={{from:location.pathname}} />} />
-          
-          <Route path="/collection" element={userData ? <Collections /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/about" element={<About />} />
 
-          <Route path="/product" element={userData ? <Product /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/collection" element={<Collections />} />
 
-          <Route path="/contact" element={userData ? <Contact /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/product" element={<Product />} />
 
-          <Route path="/productdetail/:productId" element={userData ? <ProductDetail /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/contact" element={<Contact />} />
 
-          <Route path="/cart" element={userData ? <Cart /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/productdetail/:productId" element={<ProductDetail />} />
 
-          <Route path="/placeorder" element={userData ? <PlaceOrder /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/cart" element={userData ? <Cart /> : <Navigate to='/login' state={{ from: location.pathname }} />} />
 
-          <Route path="/order" element={userData ? <Order /> : <Navigate to='/login' state={{from:location.pathname}} />} />
+        <Route path="/placeorder" element={userData ? <PlaceOrder /> : <Navigate to='/login' state={{ from: location.pathname }} />} />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Ai />
+        <Route path="/order" element={userData ? <Order /> : <Navigate to='/login' state={{ from: location.pathname }} />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Ai />
     </>
   )
 }
