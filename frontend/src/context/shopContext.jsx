@@ -69,8 +69,7 @@ function ShopContext({ children }) {
     const getUserCart = async () => {
         try {
             const token = localStorage.getItem("token");
-            const result = await axios.post(`${serverUrl}/api/cart/get`,
-                {},
+            const result = await axios.get(`${serverUrl}/api/cart/get`,
                 {
                     withCredentials: true,
                     headers: {
