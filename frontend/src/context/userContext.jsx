@@ -14,13 +14,19 @@ function UserContext({ children }) {
     const getCurrentUser = async () => {
         try {
             const token = localStorage.getItem("token");
+            const requestHeaders = {
+                'withCredentials': true
+            };
+
+            if (token && token !== "null" && token !== "undefined") {
+                requestHeaders['Authorization'] = `Bearer ${token}`;
+            }
+
             let result = await axios.post(`${serverUrl}/api/user/getcurrentuser`,
                 {},
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: requestHeaders
                 }
             )
             setUserData(result.data);

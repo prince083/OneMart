@@ -46,7 +46,7 @@ export const register = async (req, res) => {
 
         return res.status(201).json({
             msg: "User registered successfully",
-            token,
+            token: token,
             user: {
                 _id: newUser._id,
                 name: newUser.name,
@@ -92,7 +92,7 @@ export const login = async (req, res) => {
 
         return res.status(200).json({
             msg: "User logged in successfully",
-            token,
+            token: token,
             user: {
                 _id: user._id,
                 name: user.name,
@@ -150,7 +150,7 @@ export const googleLogin = async (req, res) => {
 
         return res.status(200).json({
             msg: "User logged in successfully",
-            token
+            token: token
         });
     } catch (error) {
         return res.status(500).json({ msg: error.message });
