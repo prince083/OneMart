@@ -1,6 +1,8 @@
 import Logo from '../assets/vcart-logo.png'
-import { useState,
-    useContext } from 'react';
+import {
+    useState,
+    useContext
+} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
@@ -24,6 +26,10 @@ const Login = () => {
                 email,
                 password
             }, { withCredentials: true });
+
+            if (result.data.token) {
+                localStorage.setItem("admin-token", result.data.token);
+            }
             console.log("Login successful:", result.data);
             toast.success("Admin Login Successful!");
             getAdmin();

@@ -11,15 +11,20 @@ import axios from 'axios';
 
 export const adminDataContext = createContext();
 
-function AdminContext({children}){
+function AdminContext({ children }) {
     let [adminData, setAdminData] = useState(null);
-    let {serverUrl} = useContext(authDataContext);
+    let { serverUrl } = useContext(authDataContext);
 
     const getAdmin = async () => {
-        
         try {
-            let result  = await axios.get(`${serverUrl}/api/user/getadmin`,
-            { withCredentials:true }
+            const token = localStorage.getItem("admin-token");
+            let result = await axios.get(`${serverUrl}/api/user/getadmin`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             )
             setAdminData(result.data);
         } catch (error) {
@@ -28,9 +33,9 @@ function AdminContext({children}){
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getAdmin();
-    },[])
+    }, [])
 
     let value = {
         adminData, setAdminData, getAdmin

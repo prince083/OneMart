@@ -11,13 +11,20 @@ function Order() {
     let { currency } = useContext(shopDataContext);
     let { serverUrl } = useContext(authDataContext);
 
-    const loadOrderData = async() => {
+    const loadOrderData = async () => {
         try {
-            let result = await axios.post(`${serverUrl}/api/order/userorders`, {}, { withCredentials: true });
-            if(result.data){
+            const token = localStorage.getItem("token");
+            let result = await axios.post(`${serverUrl}/api/order/userorders`,
+                {},
+                {
+                    withCredentials: true,
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            if (result.data) {
                 let allOrdersItem = [];
-                result.data.map((order)=>{
-                    order.items.map((item)=>{
+                result.data.map((order) => {
+                    order.items.map((item) => {
                         item['status'] = order.status
                         item['payment'] = order.payment
                         item['paymentMethod'] = order.paymentMethod
@@ -32,9 +39,9 @@ function Order() {
         }
     }
 
-    useEffect(()=>{
-            loadOrderData();
-    },[])
+    useEffect(() => {
+        loadOrderData();
+    }, [])
 
     return (
         <div className='w-[99vw] min-h-[100vh] p-[20px] pb-[150px] overflow-hidden bg-gradient-to-l from-[#141414] to-[#0c2025]'>
@@ -46,7 +53,7 @@ function Order() {
                     orderData.map((item, index) => (
                         <div key={index} className='w-[100%] h-[10%] border-t border-b '>
                             <div className='w-[100%] h-[80%] flex items-start gap-6 bg-[#51808048] py-[10px] px-[20px] rounded-2xl relative '>
-                                <img src={item.image1} alt="" className='w-[130px] h-[130px] rounded-md '/>
+                                <img src={item.image1} alt="" className='w-[130px] h-[130px] rounded-md ' />
                                 <div className='flex items-start justify-center flex-col gap-[5px]'>
                                     <p className='md:text-[25px] text-[20px] text-[#f3f9fc]'>
                                         {item.name}
@@ -66,7 +73,7 @@ function Order() {
                                     </div>
                                     <div className='flex items-center'>
                                         <p className='md:text-[16px] text-[12px] text-[#aaf4e7]'>Payment Method :{item.
-                                                paymentMethod}</p>
+                                            paymentMethod}</p>
                                     </div>
                                     <div className='absolute md:left-[55%] md:top-[40%] right-[2%] top-[2%] '>
                                         <div className="flex items-center gap-[5px]">

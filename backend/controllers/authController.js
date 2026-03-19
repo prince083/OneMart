@@ -25,7 +25,7 @@ export const register = async (req, res) => {
         await User.findOne({ email }).then((user) => {
             if (user) return res.status(400).json({ msg: "User already exists" });
         });
-        
+
         const hashPassword = await bcrypt.hash(password, 8);
         const newUser = new User({
             name,
@@ -46,13 +46,14 @@ export const register = async (req, res) => {
 
         return res.status(201).json({
             msg: "User registered successfully",
+            token,
             user: {
                 _id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
             }
         });
-        
+
     }
     catch (error) {
         return res.status(500).json({ msg: error.message });
@@ -91,6 +92,7 @@ export const login = async (req, res) => {
 
         return res.status(200).json({
             msg: "User logged in successfully",
+            token,
             user: {
                 _id: user._id,
                 name: user.name,
@@ -147,7 +149,8 @@ export const googleLogin = async (req, res) => {
         });
 
         return res.status(200).json({
-            msg: "User logged in successfully"
+            msg: "User logged in successfully",
+            token
         });
     } catch (error) {
         return res.status(500).json({ msg: error.message });
@@ -158,9 +161,9 @@ export const googleLogin = async (req, res) => {
 export const adminLogin = async (req, res) => {
     try {
         let { email, password } = req.body;
-        if(email === process.env.ADMIN_EMAIL
-            && password === process.env.ADMIN_PASSWORD){
-    
+        if (email === process.env.ADMIN_EMAIL
+            && password === process.env.ADMIN_PASSWORD) {
+
             const token = genTokenAdmin(email);
             res.cookie("token", token, {
                 httpOnly: true,
@@ -175,7 +178,7 @@ export const adminLogin = async (req, res) => {
                 msg: "User logged in successfully"
             });
         }
-        return res.status(400).json({message:"invalid Credentials"})
+        return res.status(400).json({ message: "invalid Credentials" })
 
     } catch (error) {
         console.log("Admin Login error")

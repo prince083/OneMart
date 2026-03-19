@@ -30,6 +30,11 @@ const Login = () => {
                 email,
                 password
             }, { withCredentials: true });
+
+            if (result.data.token) {
+                localStorage.setItem("token", result.data.token);
+            }
+
             console.log("Login successful:", result.data);
             toast.success("Login Successful!");
             getCurrentUser();
@@ -70,6 +75,10 @@ const Login = () => {
                 name,
                 email
             }, { withCredentials: true });
+
+            if (result.data.token) {
+                localStorage.setItem("token", result.data.token);
+            }
 
             console.log("Google sign-in successful:", result.data);
             toast.success("Google Login Successful!");

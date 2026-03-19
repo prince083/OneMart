@@ -30,6 +30,11 @@ const Registration = () => {
                 email,
                 password
             }, { withCredentials: true });
+
+            if (result.data.token) {
+                localStorage.setItem("token", result.data.token);
+            }
+
             getCurrentUser();
             navigate("/");
         } catch (error) {
@@ -65,6 +70,10 @@ const Registration = () => {
                 name,
                 email
             }, { withCredentials: true });
+
+            if (result.data.token) {
+                localStorage.setItem("token", result.data.token);
+            }
 
             console.log("Google sign-in successful:", result.data);
             const ok = await getCurrentUser();

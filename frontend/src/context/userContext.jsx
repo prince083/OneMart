@@ -13,7 +13,16 @@ function UserContext({ children }) {
 
     const getCurrentUser = async () => {
         try {
-            let result = await axios.post(`${serverUrl}/api/user/getcurrentuser`, {}, { withCredentials: true, })
+            const token = localStorage.getItem("token");
+            let result = await axios.post(`${serverUrl}/api/user/getcurrentuser`,
+                {},
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
             setUserData(result.data);
             return true;
         } catch (error) {

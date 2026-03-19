@@ -6,13 +6,13 @@ import { UserDataContext } from "./userContext";
 
 
 export const shopDataContext = createContext();
-function ShopContext({children}){
+function ShopContext({ children }) {
     let [products, setProducts] = useState([]);
     let { userData } = useContext(UserDataContext);
     let [search, setSearch] = useState('');
     let [showSearch, setShowSearch] = useState(false);
     let { serverUrl } = useContext(authDataContext);
-    let [ cartItem, setCartItem ] = useState({});
+    let [cartItem, setCartItem] = useState({});
     let currency = '₹';
     let delivery_fee = 40;
 
@@ -21,34 +21,43 @@ function ShopContext({children}){
             let result = await axios.get(`${serverUrl}/api/product/list`)
             setProducts(result.data);
         } catch (error) {
-            console.log('product fatch error:',error);
+            console.log('product fatch error:', error);
         }
     }
 
     const addToCart = async (itemId, size) => {
-        if(!size) {
+        if (!size) {
             console.log("Select Product size");
             return;
         }
 
         let cartData = structuredClone(cartItem); //clone product
 
-        if(cartData[itemId]){
-            if(cartData[itemId][size]) {
+        if (cartData[itemId]) {
+            if (cartData[itemId][size]) {
                 cartData[itemId][size] += 1;
             } else {
                 cartData[itemId][size] = 1;
-            } 
+            }
         } else {
             cartData[itemId] = {};
             cartData[itemId][size] = 1;
         }
 
         setCartItem(cartData);
-        
+
         if (userData) {
             try {
-                let result = await axios.post(`${serverUrl}/api/cart/add`, {itemId, size}, { withCredentials: true });
+                const token = localStorage.getItem("token");
+                let result = await axios.post(`${serverUrl}/api/cart/add`,
+                    { itemId, size },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
                 console.log(result.data);
             } catch (error) {
                 console.log(error);
@@ -59,7 +68,16 @@ function ShopContext({children}){
 
     const getUserCart = async () => {
         try {
-            const result = await axios.post(`${serverUrl}/api/cart/get`, {}, { withCredentials: true });
+            const token = localStorage.getItem("token");
+            const result = await axios.post(`${serverUrl}/api/cart/get`,
+                {},
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
             setCartItem(result.data.cartData);
         } catch (error) {
             console.log(error);
@@ -73,7 +91,16 @@ function ShopContext({children}){
 
         if (userData) {
             try {
-                await axios.post(`${serverUrl}/api/cart/update`, {itemId, size, quantity}, { withCredentials: true });
+                const token = localStorage.getItem("token");
+                await axios.post(`${serverUrl}/api/cart/update`,
+                    { itemId, size, quantity },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
             } catch (error) {
                 console.log(error);
             }
@@ -122,11 +149,11 @@ function ShopContext({children}){
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getProducts();
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         getUserCart();
     }, [])
 

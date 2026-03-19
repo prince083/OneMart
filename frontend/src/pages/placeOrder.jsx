@@ -4,7 +4,7 @@ import CartTotal from '../component/cartTotal';
 import razorpay from '../assets/razorpay.png';
 import { shopDataContext } from '../context/shopContext';
 import { authDataContext } from '../context/authContext';
-import axios from 'axios'; 
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -45,8 +45,15 @@ function PlaceOrder() {
             receipt: order.receipt,
             handler: async function (response) {
                 console.log("Payment successful:", response);
-                const {data} = await axios.post(`${serverUrl}/api/order/verifyrazorpay`,response,{withCredentials:true});
-                if(data){
+                const token = localStorage.getItem("token");
+                const { data } = await axios.post(`${serverUrl}/api/order/verifyrazorpay`,
+                    response,
+                    {
+                        withCredentials: true,
+                        headers: { Authorization: `Bearer ${token}` }
+                    }
+                );
+                if (data) {
                     setCartItem({});
                     navigate('/order');
                 }
@@ -56,7 +63,7 @@ function PlaceOrder() {
         rzp.open();
     }
 
-    const onSubmitHandler = async(e) => {
+    const onSubmitHandler = async (e) => {
         e.preventDefault();
         try {
             let orderItems = []
@@ -79,24 +86,40 @@ function PlaceOrder() {
             }
 
             switch (method) {
-                case 'cod':
+                case 'cod': {
                     // Handle Cash on Delivery order placement
 
-                    const result =  await axios.post(`${serverUrl}/api/order/placeorder`, orderData, { withCredentials: true });
+                    const token = localStorage.getItem("token");
+                    const result = await axios.post(`${serverUrl}/api/order/placeorder`,
+                        orderData,
+                        {
+                            withCredentials: true,
+                            headers: { Authorization: `Bearer ${token}` }
+                        }
+                    );
                     console.log(result.data);
-                    if(result.data){
+                    if (result.data) {
                         setCartItem({});
                         navigate('/order');
                     }
                     break;
-                case 'razorpay':
+                }
+                case 'razorpay': {
                     // Handle Razorpay order placement
-                    const resultRazorpay = await axios.post(`${serverUrl}/api/order/razorpay`, orderData, { withCredentials: true });
-                    if(resultRazorpay.data){
+                    const token = localStorage.getItem("token");
+                    const resultRazorpay = await axios.post(`${serverUrl}/api/order/razorpay`,
+                        orderData,
+                        {
+                            withCredentials: true,
+                            headers: { Authorization: `Bearer ${token}` }
+                        }
+                    );
+                    if (resultRazorpay.data) {
                         // Redirect to Razorpay payment gateway or handle payment here
                         initPay(resultRazorpay.data);
                     }
                     break;
+                }
                 default:
                     console.log('Invalid payment method selected.');
             }
@@ -114,70 +137,70 @@ function PlaceOrder() {
                     </div>
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="text" placeholder='First name' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='firstName'
-                        value={formData.firstName} />
+                            required
+                            onChange={onChangeHandler}
+                            name='firstName'
+                            value={formData.firstName} />
 
                         <input type="text" placeholder='Last name' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
-                        required
-                        onChange={onChangeHandler}
-                        name='lastName'
-                        value={formData.lastName} />
+                            required
+                            onChange={onChangeHandler}
+                            name='lastName'
+                            value={formData.lastName} />
                     </div>
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="email" placeholder='Enter Your email' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='email'
-                        value={formData.email} />
+                            required
+                            onChange={onChangeHandler}
+                            name='email'
+                            value={formData.email} />
                     </div>
                     {/* 💡 New: Street address row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="text" placeholder='Street' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='street'
-                        value={formData.street} />
+                            required
+                            onChange={onChangeHandler}
+                            name='street'
+                            value={formData.street} />
                     </div>
 
                     {/* 💡 New: City / State row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="text" placeholder='City' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='city'
-                        value={formData.city} />
+                            required
+                            onChange={onChangeHandler}
+                            name='city'
+                            value={formData.city} />
 
                         <input type="text" placeholder='State' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
-                        required
-                        onChange={onChangeHandler}
-                        name='state'
-                        value={formData.state} />
+                            required
+                            onChange={onChangeHandler}
+                            name='state'
+                            value={formData.state} />
                     </div>
 
                     {/* 💡 New: Pincode / Country row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="text" placeholder='Pincode' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='pincode'
-                        value={formData.pincode} />
+                            required
+                            onChange={onChangeHandler}
+                            name='pincode'
+                            value={formData.pincode} />
 
                         <input type="text" placeholder='Country' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
-                        required
-                        onChange={onChangeHandler}
-                        name='country'
-                        value={formData.country} />
+                            required
+                            onChange={onChangeHandler}
+                            name='country'
+                            value={formData.country} />
                     </div>
 
                     {/* 💡 New: Phone row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
                         <input type="tel" placeholder='Phone' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
-                        required
-                        onChange={onChangeHandler}
-                        name='phone'
-                        value={formData.phone} />
+                            required
+                            onChange={onChangeHandler}
+                            name='phone'
+                            value={formData.phone} />
                     </div>
                     {/* 💡 New: Submit Button for "Place Order" */}
                     <div className='w-[100%] px-[10px] mt-[20px]'>
