@@ -17,21 +17,25 @@ export const isAuth = async (req, res, next) => {
         }
 
         if (!token) {
+            console.log("Auth failed: No token provided");
             return res.status(401).json({
-                message: "user does not have token!"
+                message: "Authentication failed: No token provided."
             })
         }
 
-        let verifyToken = jwt.verify(token, process.env.JWT_SECRET)
-        if (!verifyToken) {
+        try {
+            const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+            req.userId = verifyToken.id;
+            console.log("Auth success for user:", req.userId);
+            next();
+        } catch (jwtError) {
+            console.error("JWT Verification failed:", jwtError.message);
             return res.status(401).json({
-                message: "user does not have a valid token."
-            })
+                message: "Authentication failed: Invalid or expired token."
+            });
         }
-        req.userId = verifyToken.id;
-        next()
     } catch (error) {
-        console.error('message', error)
-        return res.status(500).json({ message: `isAuth error ${error}` })
+        console.error('isAuth Global Error:', error);
+        return res.status(500).json({ message: `Internal Security Error` });
     }
 }
