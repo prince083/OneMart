@@ -14,9 +14,7 @@ function UserContext({ children }) {
     const getCurrentUser = async () => {
         try {
             const token = localStorage.getItem("token");
-            const requestHeaders = {
-                'withCredentials': true
-            };
+            const requestHeaders = {};
 
             if (token && token !== "null" && token !== "undefined") {
                 requestHeaders['Authorization'] = `Bearer ${token}`;
