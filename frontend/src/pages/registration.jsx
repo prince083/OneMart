@@ -29,7 +29,7 @@ const Registration = () => {
                 name,
                 email,
                 password
-            },{withCredentials: true});
+            }, { withCredentials: true });
             getCurrentUser();
             navigate("/");
         } catch (error) {
@@ -38,8 +38,26 @@ const Registration = () => {
     }
     const handleGoogleSignup = async () => {
         try {
-            const response = await signInWithPopup(auth, provider);
-            const user = response.user;
+            // Check if it's a mobile device (standard regex check)
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // For mobile, redirect is more reliable
+                const { signInWithRedirect } = await import('firebase/auth');
+                await signInWithRedirect(auth, provider);
+                return; // The browser will redirect, then return to this page
+            } else {
+                // For desktop, popup is better UX
+                const response = await signInWithPopup(auth, provider);
+                await processGoogleSignup(response.user);
+            }
+        } catch (error) {
+            console.error("Error during Google sign-up:", error);
+        }
+    }
+
+    const processGoogleSignup = async (user) => {
+        try {
             const name = user.displayName;
             const email = user.email;
 
@@ -47,82 +65,101 @@ const Registration = () => {
                 name,
                 email
             }, { withCredentials: true });
+
             console.log("Google sign-in successful:", result.data);
-            getCurrentUser();
-            navigate("/");
+            const ok = await getCurrentUser();
+            if (ok) {
+                navigate("/");
+            }
         } catch (error) {
-            console.error("Error during Google sign-in:", error);
+            console.error("Error processing signup:", error);
         }
     }
 
-  return (
-    <>
-        <div className="w-[100%] max-h-fit bg-gradient-to-l from-blue-300 to-blue-100 pb-10">
-            <div className='flex justify-start items-center gap-3 hover:cursor-pointer
-            p-3' onClick={() => navigate('/')}>
-                <img className=" w-[50px] h-[50px]" src={Logo} alt="" />
-                <h1 className='text-white font-sans'>OneMart</h1>
-            </div>
+    // Handle the result of a Redirect (if any) when the component mounts
+    useEffect(() => {
+        const checkRedirectResult = async () => {
+            const { getRedirectResult } = await import('firebase/auth');
+            try {
+                const result = await getRedirectResult(auth);
+                if (result && result.user) {
+                    await processGoogleSignup(result.user);
+                }
+            } catch (error) {
+                console.error("Redirect signup error:", error);
+            }
+        };
+        checkRedirectResult();
+    }, [auth]);
 
-            <div className='flex flex-col justify-center items-center gap-3 mt-10'>
-                <h1 className='text-blue-950 font-sans text-3xl font-bold'>Create Account</h1>
-                <p className='text-blue-950 font-sans'>Register with your email and password</p>
-            </div>
-            <div className='max-w-[450px] w-[60%] h-[500px] bg-white border-1 rounded-lg border-gray-300
+    return (
+        <>
+            <div className="w-[100%] max-h-fit bg-gradient-to-l from-blue-300 to-blue-100 pb-10">
+                <div className='flex justify-start items-center gap-3 hover:cursor-pointer
+            p-3' onClick={() => navigate('/')}>
+                    <img className=" w-[50px] h-[50px]" src={Logo} alt="" />
+                    <h1 className='text-white font-sans'>OneMart</h1>
+                </div>
+
+                <div className='flex flex-col justify-center items-center gap-3 mt-10'>
+                    <h1 className='text-blue-950 font-sans text-3xl font-bold'>Create Account</h1>
+                    <p className='text-blue-950 font-sans'>Register with your email and password</p>
+                </div>
+                <div className='max-w-[450px] w-[60%] h-[500px] bg-white border-1 rounded-lg border-gray-300
             backdrop:blur-2xl shadow-lg mt-8 mx-auto px-8 flex flex-col'>
-                  <form onSubmit={handleRegister}
+                    <form onSubmit={handleRegister}
                         className='flex flex-col justify-center gap-3 mt-8 relative'>
-                      <label>
-                          <p className='font-sans text-gray-600 font-semibold'>Full Name</p>
-                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
+                        <label>
+                            <p className='font-sans text-gray-600 font-semibold'>Full Name</p>
+                            <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100'
                                 type="text"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)} />
-                      </label>
-                      <label>
-                          <p className='font-sans text-gray-600 font-semibold'>Email</p>
-                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
+                        </label>
+                        <label>
+                            <p className='font-sans text-gray-600 font-semibold'>Email</p>
+                            <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100'
                                 type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)} />
-                      </label>
-                      <label>
-                          <p className='font-sans text-gray-600 font-semibold'>Password</p>
-                          <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
+                        </label>
+                        <label>
+                            <p className='font-sans text-gray-600 font-semibold'>Password</p>
+                            <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
                     outline-none px-2 hover:bg-gray-100 relative'
                                 type={showPassword ? "text" : "password"}
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} />
                             {!showPassword ? <FaRegEye className='absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-600'
-                            onClick={() => setShowPassword(true)} /> : null}
+                                onClick={() => setShowPassword(true)} /> : null}
                             {showPassword ? <FaEyeSlash className='absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-600'
-                            onClick={() => setShowPassword(false)} /> : null}
-                      </label>
-                      <button className='w-[100%] h-[40px] bg-blue-950 text-white font-sans
+                                onClick={() => setShowPassword(false)} /> : null}
+                        </label>
+                        <button className='w-[100%] h-[40px] bg-blue-950 text-white font-sans
                 rounded-md hover:bg-blue-800'>Register</button>
-                      <p className='font-sans text-gray-600'>Already have an account?
-                          <span className='text-blue-950 font-semibold hover:cursor-pointer'
-                              onClick={() => navigate('/login')}> Login</span></p>
+                        <p className='font-sans text-gray-600'>Already have an account?
+                            <span className='text-blue-950 font-semibold hover:cursor-pointer'
+                                onClick={() => navigate('/login')}> Login</span></p>
 
-                      <hr className='w-[100%] border-1 border-gray-300 my-4'/>
-                      <button className='w-[100%] h-[40px] text-white font-sans
+                        <hr className='w-[100%] border-1 border-gray-300 my-4' />
+                        <button className='w-[100%] h-[40px] text-white font-sans
                 rounded-md border-1 border-gray-300 cursor-pointer hover:bg-gray-100 flex justify-center items-center gap-3'
-                              onClick={handleGoogleSignup}>
-                        <img src={GoogleLogo}
-                        alt="no Image load"
-                        className='w-[20px] h-[20px]'/>
-                        <p className='text-gray-600'>Register with Google</p>
-                       </button>
-                  </form>
-                
+                            onClick={handleGoogleSignup}>
+                            <img src={GoogleLogo}
+                                alt="no Image load"
+                                className='w-[20px] h-[20px]' />
+                            <p className='text-gray-600'>Register with Google</p>
+                        </button>
+                    </form>
+
+                </div>
             </div>
-        </div>
-    </>
-  )
+        </>
+    )
 }
 export default Registration;

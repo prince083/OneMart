@@ -1,8 +1,10 @@
 import Logo from '../assets/vcart-logo.png'
 import GoogleLogo from '../assets/Google-logo.png'
-import { useState,
+import {
+    useState,
     useEffect,
-    useContext } from 'react';
+    useContext
+} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
@@ -40,8 +42,27 @@ const Login = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            const response = await signInWithPopup(auth, provider);
-            const user = response.user;
+            // Check if it's a mobile device (standard regex check)
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // For mobile, redirect is more reliable
+                const { signInWithRedirect } = await import('firebase/auth');
+                await signInWithRedirect(auth, provider);
+                return; // The browser will redirect, then return to this page
+            } else {
+                // For desktop, popup is better UX
+                const response = await signInWithPopup(auth, provider);
+                await processGoogleLogin(response.user);
+            }
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
+            toast.error('Google Login Failed. Please try again.');
+        }
+    }
+
+    const processGoogleLogin = async (user) => {
+        try {
             const name = user.displayName;
             const email = user.email;
 
@@ -49,20 +70,38 @@ const Login = () => {
                 name,
                 email
             }, { withCredentials: true });
+
             console.log("Google sign-in successful:", result.data);
             toast.success("Google Login Successful!");
-            // 🔥 WAIT FOR COOKIE TO SYNC
+
             const ok = await getCurrentUser();
             if (ok) {
-              navigate("/");
+                navigate("/");
             } else {
-              toast.error("Session failed. Login again.");
+                toast.error("Session failed. Login again.");
             }
         } catch (error) {
-            console.error("Error during Google sign-in:", error);
-            toast.error('Google Login Failed. Please try again.');
+            console.error("Error processing login:", error);
+            toast.error("Failed to sync your account. Try again.");
         }
     }
+
+    // Handle the result of a Redirect (if any) when the component mounts
+    useEffect(() => {
+        const checkRedirectResult = async () => {
+            const { getRedirectResult } = await import('firebase/auth');
+            try {
+                const result = await getRedirectResult(auth);
+                if (result && result.user) {
+                    await processGoogleLogin(result.user);
+                }
+            } catch (error) {
+                console.error("Redirect login error:", error);
+                // toast.error("Social login redirect failed.");
+            }
+        };
+        checkRedirectResult();
+    }, [auth]);
 
 
     return (
@@ -113,7 +152,7 @@ const Login = () => {
                         <hr className='w-[100%] border-1 border-gray-300 my-4' />
                         <button className='w-100% h-[40px] text-white font-sans
                     rounded-md border-1 border-gray-300 cursor-pointer hover:bg-gray-100 flex justify-center items-center gap-3'
-                                onClick={handleGoogleLogin}>
+                            onClick={handleGoogleLogin}>
                             <img src={GoogleLogo}
                                 alt="no Image load"
                                 className='w-[20px] h-[20px]' />
