@@ -159,11 +159,11 @@ const Login = () => {
                                 onClick={() => navigate('/register')}> Register</span></p>
 
                         <hr className='w-[100%] border-1 border-gray-300 my-4' />
-                        <button className='w-100% h-[40px] text-white font-sans
+                        <button type="button" className='w-full h-[40px] text-white font-sans
                     rounded-md border-1 border-gray-300 cursor-pointer hover:bg-gray-100 flex justify-center items-center gap-3'
                             onClick={handleGoogleLogin}>
                             <img src={GoogleLogo}
-                                alt="no Image load"
+                                alt="Google Logo"
                                 className='w-[20px] h-[20px]' />
                             <p className='text-gray-600'>Login with Google</p>
                         </button>
