@@ -53,6 +53,11 @@ app.use((req, res, next) => {
 });
 
 
+// Health check — visit /health to confirm server is live
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", message: "Backend is running!", timestamp: new Date().toISOString() });
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
