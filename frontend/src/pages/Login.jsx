@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
-import { signInWithRedirect, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
+import { signInWithRedirect, signInWithPopup, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
@@ -51,12 +51,22 @@ const Login = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            // Set flag so we know the user came back from a Google redirect
-            sessionStorage.setItem('pendingGoogleLogin', 'true');
-            await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // Mobile: use redirect (popups are blocked on mobile browsers)
+                sessionStorage.setItem('pendingGoogleLogin', 'true');
+                await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
+            } else {
+                // Desktop: use popup (better UX, stays on same page)
+                const response = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
+                await processGoogleLogin(response.user);
+            }
         } catch (error) {
             console.error("Error during Google sign-in:", error);
-            toast.error('Google Login Failed. Please try again.');
+            if (error.code !== 'auth/cancelled-popup-request') {
+                toast.error('Google Login Failed. Please try again.');
+            }
         }
     }
 

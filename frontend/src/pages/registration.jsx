@@ -9,7 +9,7 @@ import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-import { signInWithRedirect, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
+import { signInWithRedirect, signInWithPopup, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 const Registration = () => {
@@ -46,11 +46,22 @@ const Registration = () => {
     }
     const handleGoogleSignup = async () => {
         try {
-            // Set flag so we know the user came back from a Google redirect
-            sessionStorage.setItem('pendingGoogleSignup', 'true');
-            await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // Mobile: use redirect (popups are blocked on mobile browsers)
+                sessionStorage.setItem('pendingGoogleSignup', 'true');
+                await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
+            } else {
+                // Desktop: use popup (better UX, stays on same page)
+                const response = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
+                await processGoogleSignup(response.user);
+            }
         } catch (error) {
             console.error("Error during Google sign-up:", error);
+            if (error.code !== 'auth/cancelled-popup-request') {
+                toast && toast.error('Google Signup Failed. Please try again.');
+            }
         }
     }
 
