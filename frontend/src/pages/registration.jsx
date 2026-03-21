@@ -9,7 +9,7 @@ import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-import { signInWithPopup, signInWithRedirect, getRedirectResult, browserPopupRedirectResolver } from 'firebase/auth';
+import { signInWithRedirect, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 const Registration = () => {
@@ -43,7 +43,8 @@ const Registration = () => {
     }
     const handleGoogleSignup = async () => {
         try {
-            // Always use redirect — popup is blocked by COOP headers on Render
+            // Set flag so we know the user came back from a Google redirect
+            sessionStorage.setItem('pendingGoogleSignup', 'true');
             await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
         } catch (error) {
             console.error("Error during Google sign-up:", error);
@@ -74,22 +75,17 @@ const Registration = () => {
         }
     }
 
-    // Handle redirect result when user comes back from Google
+    // Listen for Firebase auth state change after redirect
     useEffect(() => {
-        const checkRedirectResult = async () => {
-            try {
-                const result = await getRedirectResult(auth);
-                if (result && result.user) {
-                    console.log("Redirect result found:", result.user.email);
-                    await processGoogleSignup(result.user);
-                } else {
-                    console.log("No redirect result found (normal page load)");
-                }
-            } catch (error) {
-                console.error("Redirect signup error:", error.code, error.message);
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            const isPending = sessionStorage.getItem('pendingGoogleSignup');
+            if (firebaseUser && isPending) {
+                sessionStorage.removeItem('pendingGoogleSignup');
+                console.log("Auth state changed after redirect:", firebaseUser.email);
+                await processGoogleSignup(firebaseUser);
             }
-        };
-        checkRedirectResult();
+        });
+        return () => unsubscribe();
     }, []);
 
     return (

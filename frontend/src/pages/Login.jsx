@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
-import { signInWithPopup, signInWithRedirect, getRedirectResult, browserPopupRedirectResolver } from 'firebase/auth';
+import { signInWithRedirect, onAuthStateChanged, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
@@ -47,9 +47,9 @@ const Login = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            // Always use redirect — popup is blocked by COOP headers on Render
+            // Set flag so we know the user came back from a Google redirect
+            sessionStorage.setItem('pendingGoogleLogin', 'true');
             await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
-            // Page will redirect to Google, then back here — handled by useEffect below
         } catch (error) {
             console.error("Error during Google sign-in:", error);
             toast.error('Google Login Failed. Please try again.');
@@ -85,24 +85,18 @@ const Login = () => {
         }
     }
 
-    // Handle redirect result when user comes back from Google
+    // Listen for Firebase auth state change after redirect
     useEffect(() => {
-        const checkRedirectResult = async () => {
-            try {
-                // Wait for Firebase auth to fully initialize before checking
-                await auth.authStateReady();
-                const result = await getRedirectResult(auth, browserPopupRedirectResolver);
-                if (result && result.user) {
-                    console.log("Redirect result found:", result.user.email);
-                    await processGoogleLogin(result.user);
-                } else {
-                    console.log("No redirect result found (normal page load)");
-                }
-            } catch (error) {
-                console.error("Redirect login error:", error.code, error.message);
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            const isPending = sessionStorage.getItem('pendingGoogleLogin');
+            if (firebaseUser && isPending) {
+                // User just came back from Google redirect
+                sessionStorage.removeItem('pendingGoogleLogin');
+                console.log("Auth state changed after redirect:", firebaseUser.email);
+                await processGoogleLogin(firebaseUser);
             }
-        };
-        checkRedirectResult();
+        });
+        return () => unsubscribe(); // cleanup
     }, []);
 
 

@@ -5,7 +5,7 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "onemart-ecom.onrender.com",  // Use actual domain for reliable redirects
+  authDomain: "onemart-e2876.firebaseapp.com",  // Must stay as Firebase domain
   projectId: "onemart-e2876",
   storageBucket: "onemart-e2876.appspot.com",
   messagingSenderId: "1043438926556",
