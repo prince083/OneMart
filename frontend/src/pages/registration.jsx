@@ -9,7 +9,7 @@ import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { signInWithPopup, signInWithRedirect, getRedirectResult, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 const Registration = () => {
@@ -44,8 +44,7 @@ const Registration = () => {
     const handleGoogleSignup = async () => {
         try {
             // Always use redirect — popup is blocked by COOP headers on Render
-            await signInWithRedirect(auth, provider);
-            // Page will redirect to Google, then back here — handled by useEffect below
+            await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
         } catch (error) {
             console.error("Error during Google sign-up:", error);
         }
@@ -81,10 +80,13 @@ const Registration = () => {
             try {
                 const result = await getRedirectResult(auth);
                 if (result && result.user) {
+                    console.log("Redirect result found:", result.user.email);
                     await processGoogleSignup(result.user);
+                } else {
+                    console.log("No redirect result found (normal page load)");
                 }
             } catch (error) {
-                console.error("Redirect signup error:", error);
+                console.error("Redirect signup error:", error.code, error.message);
             }
         };
         checkRedirectResult();

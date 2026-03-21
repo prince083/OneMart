@@ -1,16 +1,12 @@
 
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-// Import the functions you need from the SDKs you need
+import { getAuth, GoogleAuthProvider, browserPopupRedirectResolver } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "onemart-e2876.firebaseapp.com",
+  authDomain: "onemart-ecom.onrender.com",  // Use actual domain for reliable redirects
   projectId: "onemart-e2876",
-  // storageBucket: "onemart-e2876.firebasestorage.app",
   storageBucket: "onemart-e2876.appspot.com",
   messagingSenderId: "1043438926556",
   appId: "1:1043438926556:web:1f77d4fccdcc3d221fd219"
@@ -19,6 +15,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider =  new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account' });
 
-export { auth, provider };
+export { auth, provider, browserPopupRedirectResolver };

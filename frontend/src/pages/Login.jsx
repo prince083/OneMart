@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { signInWithPopup, signInWithRedirect, getRedirectResult, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
@@ -48,7 +48,7 @@ const Login = () => {
     const handleGoogleLogin = async () => {
         try {
             // Always use redirect — popup is blocked by COOP headers on Render
-            await signInWithRedirect(auth, provider);
+            await signInWithRedirect(auth, provider, browserPopupRedirectResolver);
             // Page will redirect to Google, then back here — handled by useEffect below
         } catch (error) {
             console.error("Error during Google sign-in:", error);
@@ -89,12 +89,17 @@ const Login = () => {
     useEffect(() => {
         const checkRedirectResult = async () => {
             try {
-                const result = await getRedirectResult(auth);
+                // Wait for Firebase auth to fully initialize before checking
+                await auth.authStateReady();
+                const result = await getRedirectResult(auth, browserPopupRedirectResolver);
                 if (result && result.user) {
+                    console.log("Redirect result found:", result.user.email);
                     await processGoogleLogin(result.user);
+                } else {
+                    console.log("No redirect result found (normal page load)");
                 }
             } catch (error) {
-                console.error("Redirect login error:", error);
+                console.error("Redirect login error:", error.code, error.message);
             }
         };
         checkRedirectResult();
