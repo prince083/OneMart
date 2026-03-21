@@ -153,8 +153,10 @@ function ShopContext({ children }) {
     }, [])
 
     useEffect(() => {
-        getUserCart();
-    }, [])
+        if (userData) {
+            getUserCart();
+        }
+    }, [userData])
 
 
     let value = {

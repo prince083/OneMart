@@ -5,8 +5,8 @@ import Product from "../model/productModel.js";
 
 export const addProduct = async (req, res) => {
     try {
-        let { name, description, price, category, subCategory, sizes,
-            bestseller, date } = req.body;
+        let {name, description, price, category, subCategory, sizes,
+            bestseller, date} = req.body;
 
         let image1 = await uploadOnCloudinary(req.files.image1[0].path)
         let image2 = await uploadOnCloudinary(req.files.image2[0].path)
@@ -51,7 +51,7 @@ export const listProduct = async (req, res) => {
 // remove single product
 export const removeProduct = async (req, res) => {
     try {
-        let { id } = req.params;
+        let {id} = req.params;
         const product = await Product.findByIdAndDelete(id);
         return res.status(200).json(product);
     } catch (error) {
