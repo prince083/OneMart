@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/authContext.jsx';
 import { UserDataContext } from '../context/userContext.jsx';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { auth, provider } from '../../utils/firebase.js';
 
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
@@ -47,19 +47,9 @@ const Login = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            // Check if it's a mobile device (standard regex check)
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-            if (isMobile) {
-                // For mobile, redirect is more reliable
-                const { signInWithRedirect } = await import('firebase/auth');
-                await signInWithRedirect(auth, provider);
-                return; // The browser will redirect, then return to this page
-            } else {
-                // For desktop, popup is better UX
-                const response = await signInWithPopup(auth, provider);
-                await processGoogleLogin(response.user);
-            }
+            // Always use redirect — popup is blocked by COOP headers on Render
+            await signInWithRedirect(auth, provider);
+            // Page will redirect to Google, then back here — handled by useEffect below
         } catch (error) {
             console.error("Error during Google sign-in:", error);
             toast.error('Google Login Failed. Please try again.');
@@ -95,10 +85,9 @@ const Login = () => {
         }
     }
 
-    // Handle the result of a Redirect (if any) when the component mounts
+    // Handle redirect result when user comes back from Google
     useEffect(() => {
         const checkRedirectResult = async () => {
-            const { getRedirectResult } = await import('firebase/auth');
             try {
                 const result = await getRedirectResult(auth);
                 if (result && result.user) {
@@ -106,11 +95,10 @@ const Login = () => {
                 }
             } catch (error) {
                 console.error("Redirect login error:", error);
-                // toast.error("Social login redirect failed.");
             }
         };
         checkRedirectResult();
-    }, [auth]);
+    }, []);
 
 
     return (

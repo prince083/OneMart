@@ -20,7 +20,8 @@ function UserContext({ children }) {
                 requestHeaders['Authorization'] = `Bearer ${token}`;
             }
 
-            let result = await axios.get(`${serverUrl}/api/user/getcurrentuser`,
+            let result = await axios.post(`${serverUrl}/api/user/getcurrentuser`,
+                {},
                 {
                     withCredentials: true,
                     headers: requestHeaders

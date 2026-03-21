@@ -3,7 +3,7 @@ import { AddToCart, GetUserCart, UpdateCart } from "../controllers/cartControlle
 import { isAuth } from "../middleware/isAuth.js";
 const cartRoutes = express.Router();
 
-cartRoutes.get("/get", isAuth, GetUserCart);
+cartRoutes.post("/get", isAuth, GetUserCart);
 cartRoutes.post("/add", isAuth, AddToCart);
 cartRoutes.post("/update", isAuth, UpdateCart);
 
