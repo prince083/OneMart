@@ -14,6 +14,9 @@ import { auth, provider } from '../../utils/firebase.js';
 
 const Registration = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(
+        !!sessionStorage.getItem('pendingGoogleSignup')
+    );
     const { serverUrl } = useContext(authDataContext);
     const navigate = useNavigate();
 
@@ -80,13 +83,25 @@ const Registration = () => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             const isPending = sessionStorage.getItem('pendingGoogleSignup');
             if (firebaseUser && isPending) {
+                setGoogleLoading(true);
                 sessionStorage.removeItem('pendingGoogleSignup');
                 console.log("Auth state changed after redirect:", firebaseUser.email);
                 await processGoogleSignup(firebaseUser);
+                setGoogleLoading(false);
             }
         });
         return () => unsubscribe();
     }, []);
+
+    // Show a full-screen loading spinner while processing Google redirect
+    if (googleLoading) {
+        return (
+            <div className="w-full min-h-screen bg-gradient-to-l from-blue-300 to-blue-100 flex flex-col justify-center items-center gap-4">
+                <div className="w-14 h-14 border-4 border-blue-200 border-t-blue-900 rounded-full animate-spin"></div>
+                <p className="text-blue-950 font-semibold text-lg font-sans">Creating your account...</p>
+            </div>
+        );
+    }
 
     return (
         <>

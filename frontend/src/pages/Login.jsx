@@ -17,6 +17,10 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(
+        // Immediately show loading if we're returning from a Google redirect
+        !!sessionStorage.getItem('pendingGoogleLogin')
+    );
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -90,14 +94,25 @@ const Login = () => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             const isPending = sessionStorage.getItem('pendingGoogleLogin');
             if (firebaseUser && isPending) {
-                // User just came back from Google redirect
+                setGoogleLoading(true);
                 sessionStorage.removeItem('pendingGoogleLogin');
                 console.log("Auth state changed after redirect:", firebaseUser.email);
                 await processGoogleLogin(firebaseUser);
+                setGoogleLoading(false);
             }
         });
-        return () => unsubscribe(); // cleanup
+        return () => unsubscribe();
     }, []);
+
+    // Show a full-screen loading spinner while processing Google redirect
+    if (googleLoading) {
+        return (
+            <div className="w-full min-h-screen bg-gradient-to-l from-blue-300 to-blue-100 flex flex-col justify-center items-center gap-4">
+                <div className="w-14 h-14 border-4 border-blue-200 border-t-blue-900 rounded-full animate-spin"></div>
+                <p className="text-blue-950 font-semibold text-lg font-sans">Signing you in with Google...</p>
+            </div>
+        );
+    }
 
 
     return (
