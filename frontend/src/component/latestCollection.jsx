@@ -8,20 +8,20 @@ import Card from "./card";
 
 function LatestCollection() {
     let { products } = useContext(shopDataContext);
-    let [ latestProducts, setLatestProducts ] = useState([]);
+    let [latestProducts, setLatestProducts] = useState([]);
 
-    useEffect(()=>{
-        setLatestProducts(products.slice(0,6));
+    useEffect(() => {
+        setLatestProducts(products.slice(0, 6));
     }, [products])
 
     return (
         <>
-            <div className="h-[8%] w-[100%] text-center md:mt-[50px]">
+            <div className="h-[8%] w-[100%] text-center md:text-start md:mt-[40px] md:ml-[8%]">
                 <Title text1={"LATEST"} text2={"COLLECTIONS"} />
                 <p className="w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-[#003366]">Step Into New Style - New Collection Dropping This Season!</p>
             </div>
-            <div className="w-[100%] h-[50%] mt-[30px] flex items-center justify-center flex-wrap gap-[50px]">
-                {latestProducts.map((item, index)=>(
+            <div className="w-[100%] h-[50%] mt-[30px] flex items-center justify-center flex-wrap gap-[20px] md:gap-[55px]">
+                {latestProducts.map((item, index) => (
                     <Card key={index} name={item.name} image={item.image1} id={item._id} price={item.price} />
                 ))}
             </div>

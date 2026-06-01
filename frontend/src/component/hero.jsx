@@ -2,36 +2,36 @@ import { FaCircle } from "react-icons/fa";
 
 
 
-function Hero({heroData, heroCount, setHeroCount }) {
+function Hero({ heroData, heroCount, setHeroCount }) {
     return (
-            <div className="w-[80%] h-[100%] relative">
-                <div className="absolute text-[#4E342E] text-[20px]
-                md:text-[40px] lg:text-[55px] md:left-[10%] md:top-[90px]
+        <div className="w-[80%] h-[100%] relative">
+            <div className="absolute text-black text-[20px]
+                md:text-[40px] lg:text-[65px] lg:font-semibold md:left-[10%] md:top-[90px]
                 lg:top-[130px] left-[10%] top-[10px]">
-                    <p>{heroData.text1}</p>
-                    <p>{heroData.text2}</p>
-                </div>
-                <div className="absolute md:top-[400px] lg:top-[500px]
+                <p>{heroData.text1}</p>
+                <p>{heroData.text2}</p>
+            </div>
+            <div className="absolute md:top-[400px] lg:top-[500px]
                 top-[160px] left-[10%] flex items-center justify-center
                 gap-[10px]">
-                    <FaCircle className={`w-[14px] ${heroCount===0 ? " fill-blue-600"
-                        : "fill-white"
+                <FaCircle className={`w-[14px] ${heroCount === 0 ? " fill-blue-600"
+                    : "fill-white border border-gray-400 rounded-full"
                     }`}
-                    onClick={()=>setHeroCount(0)} />
-                    <FaCircle className={`w-[14px] ${heroCount===1 ? " fill-blue-600"
-                        : "fill-white"
+                    onClick={() => setHeroCount(0)} />
+                <FaCircle className={`w-[14px] ${heroCount === 1 ? " fill-blue-600"
+                    : "fill-white border border-gray-400 rounded-full"
                     }`}
-                    onClick={()=>setHeroCount(1)} />
-                    <FaCircle className={`w-[14px] ${heroCount===2 ? " fill-blue-600"
-                        : "fill-white"
+                    onClick={() => setHeroCount(1)} />
+                <FaCircle className={`w-[14px] ${heroCount === 2 ? " fill-blue-600"
+                    : "fill-white border border-gray-400 rounded-full"
                     }`}
-                    onClick={()=>setHeroCount(2)} />
-                    <FaCircle className={`w-[14px] ${heroCount===3 ? " fill-blue-600"
-                        : "fill-white"
+                    onClick={() => setHeroCount(2)} />
+                <FaCircle className={`w-[14px] ${heroCount === 3 ? " fill-blue-600"
+                    : "fill-white border border-gray-400 rounded-full"
                     }`}
-                    onClick={()=>setHeroCount(3)} />
-                </div>
+                    onClick={() => setHeroCount(3)} />
             </div>
+        </div>
     )
 }
 

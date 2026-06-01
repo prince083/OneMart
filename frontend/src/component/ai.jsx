@@ -27,18 +27,18 @@ function Ai() {
 
     recognition.onresult = (e) => {
         const transcript = e.results[0][0].transcript.trim();
-        if(transcript.toLowerCase().includes("open") && !showSearch) {
+        if (transcript.toLowerCase().includes("open") && !showSearch) {
             speak("Opening search");
             setShowSearch(true);
             navigate("/collection");
-        } else if(transcript.toLowerCase().includes("close") && showSearch) {
+        } else if (transcript.toLowerCase().includes("close") && showSearch) {
             speak("Closing search");
             setShowSearch(false);
-        } else if(transcript.toLowerCase().includes("collection") || transcript.toLowerCase().includes("collections") || transcript.toLowerCase().includes("product") || transcript.toLowerCase().includes("products")) {
+        } else if (transcript.toLowerCase().includes("collection") || transcript.toLowerCase().includes("collections") || transcript.toLowerCase().includes("product") || transcript.toLowerCase().includes("products")) {
             speak("Opening collection");
             setShowSearch(true);
             navigate("/collection");
-        } else if(transcript.toLowerCase().includes("about") || transcript.toLowerCase().includes("aboutpage")) {
+        } else if (transcript.toLowerCase().includes("about") || transcript.toLowerCase().includes("aboutpage")) {
             speak("Opening about page");
             navigate("/about");
         } // Home navigation
@@ -83,20 +83,20 @@ function Ai() {
         }
 
     }
-    recognition.onend=() => {
+    recognition.onend = () => {
         setActiveAi(false);
     }
     return (
-        <div className='fixed bottom-[2%] right-[2%]'
-        onClick={()=>{
-            recognition.start();
-            openSound.play();
-            setActiveAi(true);
-        }}>
+        <div className='fixed bottom-[13%] md:bottom-[3%] right-[2%]'
+            onClick={() => {
+                recognition.start();
+                openSound.play();
+                setActiveAi(true);
+            }}>
             <img
                 src={ai}
                 alt=""
-                className={`w-[93px] cursor-pointer ${activeAi ? 'translate-x-[10%] translate-y-[-10%] scale-125 rounded-full border-2 border-green-500' : 'translate-x-[0] translate-y-[0] scale-100 rounded-full border-2 border-white'} transition-transform`}
+                className={`w-[75px] cursor-pointer ${activeAi ? 'translate-x-[10%] translate-y-[-10%] scale-125 rounded-full border-2 border-green-500' : 'translate-x-[0] translate-y-[0] scale-100 rounded-full border-2 border-white'} transition-transform`}
                 style={{
                     filter: activeAi
                         ? "drop-shadow(0px 0px 30px green)"

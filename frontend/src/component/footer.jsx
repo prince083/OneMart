@@ -5,8 +5,8 @@ import logo from '../assets/vcart-logo.png'
 function Footer() {
     return (
         <>
-            <div className='w-[100%] md:h-[36vh] h-fit mb-[77px] md:mb-[0px]'>
-                <div className='w-[100%] md:h-[30vh] h-[15vh] md:mb-[0px] bg-blue-200 flex items-center justify-center md:px-[50px] px-[5px]'>
+            <div className='w-full h-auto'>
+                <div className='w-full min-h-[15vh] md:min-h-[30vh] bg-blue-200 flex flex-col md:flex-row items-start justify-start gap-4 md:gap-8 px-4 md:px-12 py-6 md:py-0'>
 
                     {/* Logo and Branding Column */}
                     <div className='md:w-[30%] w-[35%] h-[100%] flex items-start justify-center flex-col gap-[5px]'>
@@ -19,8 +19,8 @@ function Footer() {
 
                     </div>
 
-                    <div className='md:w-[25%] w-[30%] h-[100%] flex items-center justify-center flex-col text-center'>
-                        <div className='flex items-center justify-center gap-[5px] mt-[10px] md:mt-[40px]'>
+                    <div className='md:w-[25%] w-[30%] h-[100%] flex items-start justify-start md:items-center md:justify-center flex-col text-center'>
+                        <div className='gap-[5px] mt-[10px] md:mt-[40px]'>
                             <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>COMPANY</p>
                         </div>
                         <ul>
@@ -30,7 +30,7 @@ function Footer() {
                             <li className='text-[15px] text-[#1e2223] cursor-pointer'>Privacy Policy</li>
                         </ul>
                     </div>
-                    <div className='w-[40%] h-[100%] flex items-center justify-center flex-col text-center'>
+                    <div className='w-[40%] h-[100%] flex items-start justify-start md:items-center md:justify-center flex-col text-center'>
                         <div className='flex items-center justify-center gap-[5px] mt-[10px] md:mt-[40px]'>
                             <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>Get In Touch</p>
                         </div>
@@ -43,7 +43,9 @@ function Footer() {
                     </div>
                 </div>
                 <div className='w-[100%] h-[1px] bg-slate-400'></div>
-                <div className='w-[100%] h-[5vh] bg-blue-200 flex items-center justify-center'>Copyright 2025@onemart.com-All Rights Reserved</div>
+                <div className='w-full bg-blue-200 flex items-center justify-center pb-20 md:pb-0'>
+                    Copyright 2025@onemart.com-All Rights Reserved
+                </div>
             </div>
         </>
     )
