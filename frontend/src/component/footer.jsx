@@ -20,10 +20,10 @@ function Footer() {
                     </div>
 
                     <div className='md:w-[25%] w-[30%] h-[100%] flex items-start justify-start md:items-center md:justify-center flex-col text-center'>
-                        <div className='gap-[5px] mt-[10px] md:mt-[40px]'>
+                        <div className='mt-[10px] md:mt-[40px]'>
                             <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>COMPANY</p>
                         </div>
-                        <ul>
+                        <ul className='flex flex-col items-start justify-start gap-2'>
                             <li className='text-[15px] text-[#1e2223] hidden md:block cursor-pointer'>Home</li>
                             <li className='text-[15px] text-[#1e2223] cursor-pointer '>About us</li>
                             <li className='text-[15px] text-[#1e2223] hidden md:block cursor-pointer'>Delivery</li>
@@ -31,10 +31,10 @@ function Footer() {
                         </ul>
                     </div>
                     <div className='w-[40%] h-[100%] flex items-start justify-start md:items-center md:justify-center flex-col text-center'>
-                        <div className='flex items-center justify-center gap-[5px] mt-[10px] md:mt-[40px]'>
+                        <div className='mt-[10px] md:mt-[40px]'>
                             <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>Get In Touch</p>
                         </div>
-                        <ul>
+                        <ul className='flex flex-col items-start justify-start gap-2'>
                             <li className='text-[15px] text-[#1e2223] cursor-pointer'>+91-1234567890</li>
                             <li className='text-[15px] text-[#1e2223] cursor-pointer '>contact@onemart.com</li>
                             <li className='text-[15px] text-[#1e2223] hidden md:block cursor-pointer'>+1-092-789-4567</li>
