@@ -116,7 +116,7 @@ const Registration = () => {
 
     return (
         <>
-            <div className="w-[100%] max-h-fit bg-gradient-to-l from-blue-300 to-blue-100 pb-10">
+            <div className="w-[100%] min-h-screen bg-gradient-to-l from-blue-300 to-blue-100 pb-10">
                 <div className='flex justify-start items-center gap-3 hover:cursor-pointer
             p-3' onClick={() => navigate('/')}>
                     <img className=" w-[50px] h-[50px]" src={Logo} alt="" />
@@ -124,13 +124,13 @@ const Registration = () => {
                 </div>
 
                 <div className='flex flex-col justify-center items-center gap-3 mt-10'>
-                    <h1 className='text-blue-950 font-sans text-3xl font-bold'>Create Account</h1>
-                    <p className='text-blue-950 font-sans'>Register with your email and password</p>
+                    <h1 className='text-gray-700 font-sans text-3xl font-bold'>Create Account</h1>
+                    <p className='text-gray-800 font-sans'>Register with your email and password</p>
                 </div>
-                <div className='max-w-[450px] w-[60%] h-[500px] bg-white border-1 rounded-lg border-gray-300
-            backdrop:blur-2xl shadow-lg mt-8 mx-auto px-8 flex flex-col'>
+                <div className='max-w-[450px] w-[90%] max-h-fit bg-white border-1 rounded-lg border-gray-300
+            backdrop:blur-2xl shadow-lg mt-8 mx-auto px-8 py-4 flex flex-col'>
                     <form onSubmit={handleRegister}
-                        className='flex flex-col justify-center gap-3 mt-8 relative'>
+                        className='flex flex-col justify-center gap-3 mt-2 relative'>
                         <label>
                             <p className='font-sans text-gray-600 font-semibold'>Full Name</p>
                             <input className='w-[100%] h-[40px] border-1 border-gray-300 rounded-md
@@ -162,8 +162,8 @@ const Registration = () => {
                             {showPassword ? <FaEyeSlash className='absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-600'
                                 onClick={() => setShowPassword(false)} /> : null}
                         </label>
-                        <button className='w-[100%] h-[40px] bg-blue-950 text-white font-sans
-                rounded-md hover:bg-blue-800'>Register</button>
+                        <button className='w-[100%] h-[40px] bg-orange-500 text-white font-sans
+                rounded-md hover:bg-orange-400'>Register</button>
                         <p className='font-sans text-gray-600'>Already have an account?
                             <span className='text-blue-950 font-semibold hover:cursor-pointer'
                                 onClick={() => navigate('/login')}> Login</span></p>
