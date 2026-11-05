@@ -5,8 +5,8 @@ import Product from "../model/productModel.js";
 
 export const addProduct = async (req, res) => {
     try {
-        let {name, description, price, category, subCategory, sizes,
-            bestseller, date} = req.body;
+        let { name, description, price, category, subCategory, sizes,
+            bestseller, date } = req.body;
 
         let image1 = await uploadOnCloudinary(req.files.image1[0].path)
         let image2 = await uploadOnCloudinary(req.files.image2[0].path)
@@ -48,10 +48,55 @@ export const listProduct = async (req, res) => {
     }
 }
 
+// Get matching product title suggestions
+export const getProductSuggestions = async (req, res) => {
+    try {
+        const query = req.query.q?.trim();
+
+        // Validate search query
+        if (!query || query.length < 2) {
+            return res.status(200).json({
+                success: true,
+                suggestions: []
+            });
+        }
+
+        // Escape special regex characters
+        const escapedQuery = query.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            '\\$&'
+        );
+
+        // Search matching product names
+        const suggestions = await Product.find({
+            name: {
+                $regex: escapedQuery,
+                $options: "i"
+            }
+        })
+            .select("_id name")
+            .limit(8)
+            .lean();
+
+        return res.status(200).json({
+            success: true,
+            suggestions
+        });
+
+    } catch (error) {
+        console.error("Product suggestion error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch product suggestions"
+        });
+    }
+};
+
 // remove single product
 export const removeProduct = async (req, res) => {
     try {
-        let {id} = req.params;
+        let { id } = req.params;
         const product = await Product.findByIdAndDelete(id);
         return res.status(200).json(product);
     } catch (error) {

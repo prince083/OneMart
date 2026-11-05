@@ -10,7 +10,7 @@ import { IoMdHome } from "react-icons/io";
 import { BiCollection } from "react-icons/bi";
 import { MdContacts } from "react-icons/md";
 
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { UserDataContext } from '../context/userContext';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { authDataContext } from '../context/authContext';
@@ -26,6 +26,15 @@ function Nav() {
     let { showSearch, setShowSearch, search, setSearch, getCartCount } = useContext(shopDataContext);
     let [showProfile, setShowProfile] = useState(false);
 
+    // Product autocomplete states
+    const [suggestions, setSuggestions] = useState([]);
+    const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    // Reference for detecting clicks outside search container
+    const searchContainerRef = useRef(null);
+
     const navItems = [
         { path: "/", label: "HOME" },
         { path: "/collection", label: "COLLECTION" },
@@ -33,6 +42,107 @@ function Nav() {
         { path: "/contact", label: "CONTACT" },
     ];
 
+
+    // Debounced product suggestion API
+    useEffect(() => {
+
+        const query = search.trim();
+
+        // Don't search if search bar is closed and minimum 2 characters required
+        if (!showSearch || query.length < 2) {
+            setSuggestions([]);
+            setLoadingSuggestions(false);
+            setHasSearched(false);
+            return;
+        }
+
+        // Clear previous results while waiting
+        setSuggestions([]);
+        setHasSearched(false);
+
+        const controller = new AbortController();
+
+        // Wait for 1000ms after the last keystroke
+        const timer = setTimeout(async () => {
+
+            try {
+                setLoadingSuggestions(true);
+
+                const result = await axios.get(
+                    `${serverUrl}/api/product/suggestions`,
+                    {
+                        params: { q: query },
+                        signal: controller.signal
+                    }
+                );
+
+                setSuggestions(result.data.suggestions || []);
+                setHasSearched(true);
+
+            } catch (error) {
+
+                // Ignore cancelled requests
+                if (error.name !== "CanceledError") {
+                    console.error(
+                        "Suggestion fetch error:",
+                        error
+                    );
+                }
+
+            } finally {
+                if (!controller.signal.aborted) {
+                    setLoadingSuggestions(false);
+                }
+            }
+
+        }, 1000);
+
+        // Cleanup previous timer and API request
+        return () => {
+            clearTimeout(timer);
+            controller.abort();
+        };
+
+    }, [search, showSearch, serverUrl]);
+
+    //Abort Controller for click outside search bar
+    useEffect(() => {
+
+        const handleClickOutside = (event) => {
+            if (
+                searchContainerRef.current &&
+                !searchContainerRef.current.contains(event.target)
+            ) {
+                setShowSuggestions(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+
+    }, []);
+
+    // Suggestion selection handler
+    const handleSuggestionClick = (suggestion) => {
+
+        setSearch(suggestion.name);
+
+        setShowSuggestions(false);
+        setSuggestions([]);
+        setHasSearched(false);
+
+        // Navigate to collection page
+        navigate("/collection");
+
+    };
+
+    // handle logout
     const handleLogout = async (params) => {
         try {
             const result = await axios.get(`${serverUrl}/api/auth/logout`,
@@ -59,7 +169,7 @@ function Nav() {
                 <h1 className='text-2xl text-black
                 font-sans font-bold'>OneMart</h1>
             </div>
-            <div className='w-[50%] lg:w-[40%] hidden md:flex'>
+            {!showSearch ? <div className='w-[50%] lg:w-[40%] hidden md:flex'>
                 <ul className="flex items-center justify-start gap-4.5">
                     {navItems.map((item) => (
                         <li key={item.path}>
@@ -78,6 +188,75 @@ function Nav() {
                     ))}
                 </ul>
             </div>
+                :
+
+                <div
+                    ref={searchContainerRef}
+                    className="relative w-[50%] lg:w-[70%] h-[60%]"
+                >
+                    <input
+                        type="text"
+                        className="w-full h-full bg-white rounded-[30px]
+        px-[30px] placeholder:text-gray-400
+        text-gray-700 outline-none"
+                        placeholder="Search here"
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setShowSuggestions(true);
+                        }}
+                        onFocus={() => setShowSuggestions(true)}
+                    />
+
+                    {/* Suggestions dropdown */}
+                    {showSuggestions && search.trim().length >= 2 && (
+                        <div className="absolute top-full left-0 w-full
+        mt-2 bg-white rounded-xl shadow-xl border
+        border-gray-200 overflow-hidden z-50">
+
+                            {/* Loading state */}
+                            {loadingSuggestions && (
+                                <p className="px-5 py-4 text-gray-500 text-sm">
+                                    Searching products...
+                                </p>
+                            )}
+
+                            {/* Matching suggestions */}
+                            {!loadingSuggestions && suggestions.length > 0 && (
+                                <ul className="max-h-[300px] overflow-y-auto">
+
+                                    {suggestions.map((item) => (
+                                        <li
+                                            key={item._id}
+                                            onClick={() => handleSuggestionClick(item)}
+                                            className="px-5 py-3 cursor-pointer
+                            text-gray-700 text-sm
+                            hover:bg-orange-50
+                            hover:text-orange-600
+                            border-b border-gray-100
+                            last:border-none"
+                                        >
+                                            {item.name}
+                                        </li>
+                                    ))}
+
+                                </ul>
+                            )}
+
+                            {/* No results */}
+                            {!loadingSuggestions &&
+                                hasSearched &&
+                                suggestions.length === 0 && (
+                                    <p className="px-5 py-4 text-gray-500 text-sm">
+                                        No matching products found.
+                                    </p>
+                                )}
+
+                        </div>
+                    )}
+                </div>
+
+            }
             <div className='w-[30%] flex items-center justify-end
             gap-5'>
                 {showSearch ? <IoSearchCircleSharp className='w-[38px] h-[38px] text-orange-500 cursor-pointer'
@@ -100,17 +279,6 @@ function Nav() {
                 rounded-full text-[9px] top-[10px] right-[23px] hidden md:block'>{getCartCount()}</p>
 
             </div>
-
-            {showSearch && <div className='w-[100%] h-[80px] bg-orange-100
-            absolute top-[100%] left-0 right-0 flex items-center
-            justify-center'>
-                <input type="text" className='w-[50%] h-[60%] bg-white
-                rounded-[30px] px-[50px]
-                placeholder:text-gray-200 text-gray-400 text-4.5'
-                    placeholder='Search here'
-                    onChange={(e) => { setSearch(e.target.value) }}
-                    value={search} />
-            </div>}
 
             {showProfile && <div className='absolute w-[220px] h-fit bg-white
             top-[110%] right-[4%] border-[1px] border-[#aaa9a9] rounded-[8px]

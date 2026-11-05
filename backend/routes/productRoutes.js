@@ -1,5 +1,5 @@
 import express from 'express'
-import { addProduct, listProduct, removeProduct } from '../controllers/productController.js'
+import { addProduct, listProduct, removeProduct, getProductSuggestions } from '../controllers/productController.js'
 import upload from '../middleware/multer.js'
 import adminAuth from '../middleware/adminAuth.js';
 
@@ -11,6 +11,10 @@ productRoutes.post('/addproduct', upload.fields([
     { name: "image3", maxCount: 1 },
     { name: "image4", maxCount: 1 }]), addProduct)
 productRoutes.get('/list', listProduct)
+
+// Product autocomplete suggestions
+productRoutes.get('/suggestions', getProductSuggestions)
+
 productRoutes.post('/remove/:id', adminAuth, removeProduct)
 
 
