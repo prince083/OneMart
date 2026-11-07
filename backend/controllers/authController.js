@@ -175,7 +175,8 @@ export const adminLogin = async (req, res) => {
                 maxAge: 24 * 60 * 60 * 1000
             });
             return res.status(200).json({
-                msg: "User logged in successfully"
+                msg: "User logged in successfully",
+                token: token
             });
         }
         return res.status(400).json({ message: "invalid Credentials" })

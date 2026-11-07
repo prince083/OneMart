@@ -3,8 +3,8 @@
 
 function Loading() {
     return (
-        <div className="w-full h-full flex justify-center items-center">
-            <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+        <div className="flex justify-center items-center">
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
         </div>
     )
 }

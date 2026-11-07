@@ -6,7 +6,7 @@ import { createContext } from "react";
 export const authDataContext = createContext();
 
 function AuthContext({ children }) {
-    let serverUrl = "https://onemart-nu7w.onrender.com"
+    let serverUrl = import.meta.env.VITE_SERVER_URL || "https://onemart-nu7w.onrender.com";
     let value = {
         serverUrl
     }

@@ -18,6 +18,10 @@ function AdminContext({ children }) {
     const getAdmin = async () => {
         try {
             const token = localStorage.getItem("admin-token");
+            if (!token) {
+                setAdminData(null);
+                return null;
+            }
             let result = await axios.get(`${serverUrl}/api/user/getadmin`,
                 {
                     withCredentials: true,
@@ -27,9 +31,15 @@ function AdminContext({ children }) {
                 }
             )
             setAdminData(result.data);
+            return result.data;
         } catch (error) {
-            setAdminData(null);
-            console.log(error);
+            // Only clear session if 401 (invalid token), not on network errors
+            if (error?.response?.status === 401) {
+                localStorage.removeItem("admin-token");
+                setAdminData(null);
+            }
+            console.log("getAdmin failed:", error.response?.data || error.message);
+            return null;
         }
     }
 

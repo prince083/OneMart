@@ -23,7 +23,11 @@ function Lists() {
 
     const removeList = async (id) => {
         try {
-            let result = await axios.post(`${serverUrl}/api/product/remove/${id}`,{},{withCredentials:true})
+            const token = localStorage.getItem("admin-token");
+            let result = await axios.post(`${serverUrl}/api/product/remove/${id}`,{},{
+                withCredentials: true,
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            })
 
             if(result.data){
                 fetchList()
@@ -42,39 +46,38 @@ function Lists() {
 
     return (
         <>
-            <div className="w-[100vw] min-h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] text-[white]">
+            <div className="w-[100vw] min-h-[100vh] bg-gradient-to-l from-gray-100 to-blue-200 text-gray-800">
                 <Nav />
                 <div className="w-[100%] h-[100%] flex items-center justify-start">
                     <SideBar />
 
-                    <div className="w-[80%] h-[100%] lg:ml-[320px] md:ml-[230px] mt-[70px] flex flex-col gap-[30px] overflow-x-hidden py-[50px] ml-[150px]">
-                        <div className="w-[400px] h-[50px] text-[28px] md:text-[40px] mb-[20px] text-white">All Your Products</div>
+                    <div className="w-[80%] h-[100%] lg:ml-[320px] md:ml-[230px] mt-[70px] flex flex-col gap-[20px] overflow-x-hidden py-[50px] ml-[150px]">
+                        <div className="text-[28px] md:text-[36px] font-bold text-[#003366] mb-[10px]">All Your Products</div>
 
                         {
                             list?.length > 0 ? (
                                 list.map((item, index)=>(
                                     <div
-                                      className="w-[90%] md:h-[120px] h-[90px] bg-slate-600 rounded-xl flex items-center justify-start gap-[5px] md:gap-[30px] p-[10px] md:px-[30px]"
+                                      className="w-[90%] bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl flex items-center justify-start gap-[15px] md:gap-[25px] p-[12px] md:px-[24px] shadow-sm hover:shadow-md transition-all"
                                       key={index}
                                     >
                                       <img
                                         src={item.image1}
-                                        className="w-[30%] md:w-[120px] h-[90%] rounded-lg"
+                                        className="w-[60px] md:w-[90px] h-[60px] md:h-[90px] object-cover rounded-lg border border-gray-200 bg-gray-50"
                                         alt=""
                                       />
-                                      <div className="w-[90%] h-[80%] flex flex-col items-start justify-center gap-[2px]">
-
-                                        <div className="w-[100%] md:text-[20px] text-[15px] text-[#bef0f3]">{item.name}</div>
-                                        <div className="md:text-[17px] text-[15px] text-[#bef3da]">{item.category}</div>
-                                        <div className="md:text- [17px] text-[15px] text- [#bef3da]">Rs. {item.price}</div>
+                                      <div className="flex-1 flex flex-col items-start justify-center gap-[4px]">
+                                        <div className="text-gray-900 font-semibold text-[16px] md:text-[18px]">{item.name}</div>
+                                        <div className="text-gray-500 text-[14px]">{item.category}</div>
+                                        <div className="text-orange-600 font-bold text-[15px] md:text-[16px]">₹{item.price}</div>
                                       </div>
                                       
                                       <div
-                                        className="w-[10%] h-[100%] bg-transparent flex items-center justify-center"
+                                        className="flex items-center justify-center cursor-pointer"
                                         onClick={()=>removeList(item._id)}
                                       >
-                                        <span className="w-[35px] h-[30%] flex items-center justify-center rounded-md md:hover:bg-red-300 md:hover:text-black cursor-pointer hover:text-red-300 border-[1px] py-[15px]">
-                                            X
+                                        <span className="w-[34px] h-[34px] flex items-center justify-center rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 border border-gray-200 transition-colors font-bold text-sm" title="Delete product">
+                                            ✕
                                         </span>
                                       </div>
 
@@ -83,7 +86,7 @@ function Lists() {
                             )
  
                             : (
-                                <div className="text-white text-lg">No product available.</div>
+                                <div className="text-gray-600 text-lg">No products available.</div>
                             )
                         }
                     </div>

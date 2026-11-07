@@ -26,9 +26,10 @@ const Home = () => {
   }, [])
 
   return (
-    <div className=" overflow-x-hidden relative top-[70px]">
-      <div className='w-[100vw] lg:h-[89vh] md:h-[50vh] sm:h-[30vh] bg-gradient-to-r
-      from-orange-300 to-white flex flex-row-reverse mt-0.5'>
+    <div className="overflow-x-hidden relative top-[70px] bg-gradient-to-l from-gray-100 to-blue-200">
+      <div className='w-[100vw] lg:h-[95vh] md:h-[50vh] sm:h-[30vh] bg-gradient-to-r
+      from-orange-300 to-orange-100 flex flex-row-reverse
+      rounded-b-[40px] shadow-sm overflow-hidden'>
         <Background heroCount={heroCount} />
         <Hero
           heroCount={heroCount}

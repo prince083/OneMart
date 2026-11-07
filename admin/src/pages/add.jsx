@@ -42,8 +42,12 @@ function Add() {
             formData.append("bestseller", bestseller);
             formData.append("sizes", JSON.stringify(sizes));
 
+            const token = localStorage.getItem("admin-token");
             let result = await axios.post(`${serverUrl}/api/product/addproduct`,
-                formData, {withCredentials:true})
+                formData, {
+                    withCredentials: true,
+                    headers: token ? { Authorization: `Bearer ${token}` } : {}
+                })
             console.log(result.data);
             toast.success("Product Added Successfully!");
             setLoading(false);
@@ -68,67 +72,50 @@ function Add() {
     }
     return (
         <>
-            <div className="w-[100vw] min-h-[100vh] bg-gradient-to-l
-            from-[#141414] to-[#0c2025] text-white overflow-x-hidden
-            relative">
+            <div className="w-[100vw] min-h-[100vh] bg-gradient-to-l from-gray-100 to-blue-200 text-gray-800 overflow-x-hidden relative">
                 <Nav />
                 <SideBar />
-                <div className="w-[82%] h-[100%] flex items-center
-                justify-center overflow-x-hidden absolute right-0 bottom-[5%]">
+                <div className="w-[82%] h-[100%] flex items-center justify-center overflow-x-hidden absolute right-0 bottom-[5%]">
 
-                    <form onSubmit={handleAddProduct} className="w-[100%] md:w-[90%] h-[100%] mt-[70px]
-                    flex flex-col gap-[30px] py-[60px] px-[30px]
-                    md:px-[60px]">
-                        <div className="w-[400px] h-[50px] text-[25px]
-                        md:text-[40px] text-white flex items-center
-                        justify-center">Add New Product</div>
+                    <form onSubmit={handleAddProduct} className="w-[100%] md:w-[90%] h-[100%] mt-[70px] flex flex-col gap-[25px] py-[50px] px-[30px] md:px-[60px]">
+                        <div className="text-[28px] md:text-[36px] font-bold text-[#003366]">Add New Product</div>
 
-                        <div className="w-[80%] h-[130px] flex items-start
-                        justify-center flex-col mt-[20px] gap-[10px]">
-                            <p className="text-[20px] md:text-[25px] font-semibold">Upload Images</p>
+                        <div className="w-[80%] flex items-start justify-center flex-col mt-[10px] gap-[10px]">
+                            <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">Upload Images</p>
                         </div>
 
-                        <div className="w-[100%] h-[100%] flex items-center
-                        justify-start">
-                            <label htmlFor="image1" className="w-[65px] h-[65px]
-                            md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]">
+                        <div className="w-[100%] h-[100%] flex items-center justify-start gap-4">
+                            <label htmlFor="image1" className="w-[75px] h-[75px] md:w-[100px] md:h-[100px] cursor-pointer">
                                 <img src={!image1 ? uploadImg : URL.createObjectURL(image1)}
                                  alt="" 
-                                 className="w-[80%] h-[80%] rounded-lg shadow-2xl
-                                 hover:border-[#1d1d1d] border-[2px]"/>
+                                 className="w-full h-full object-cover rounded-xl shadow-md border-2 border-dashed border-gray-300 hover:border-orange-500 bg-white/70 p-1 transition-colors"/>
                                 <input type="file" id='image1'
                                 hidden
                                 onChange={(e)=>setImage1(e.target.files[0])}
                                 required />
                             </label>
-                            <label htmlFor="image2" className="w-[65px] h-[65px]
-                            md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]">
+                            <label htmlFor="image2" className="w-[75px] h-[75px] md:w-[100px] md:h-[100px] cursor-pointer">
                                 <img src={!image2 ? uploadImg : URL.createObjectURL(image2)}
                                  alt="" 
-                                 className="w-[80%] h-[80%] rounded-lg shadow-2xl
-                                 hover:border-[#1d1d1d] border-[2px]"/>
+                                 className="w-full h-full object-cover rounded-xl shadow-md border-2 border-dashed border-gray-300 hover:border-orange-500 bg-white/70 p-1 transition-colors"/>
                                 <input type="file" id='image2'
                                 hidden
                                 onChange={(e)=>setImage2(e.target.files[0])}
                                 required />
                             </label>
-                            <label htmlFor="image3" className="w-[65px] h-[65px]
-                            md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]">
+                            <label htmlFor="image3" className="w-[75px] h-[75px] md:w-[100px] md:h-[100px] cursor-pointer">
                                 <img src={!image3 ? uploadImg : URL.createObjectURL(image3)}
                                  alt="" 
-                                 className="w-[80%] h-[80%] rounded-lg shadow-2xl
-                                 hover:border-[#1d1d1d] border-[2px]"/>
+                                 className="w-full h-full object-cover rounded-xl shadow-md border-2 border-dashed border-gray-300 hover:border-orange-500 bg-white/70 p-1 transition-colors"/>
                                 <input type="file" id='image3'
                                 hidden
                                 onChange={(e)=>setImage3(e.target.files[0])}
                                 required />
                             </label>
-                            <label htmlFor="image4" className="w-[65px] h-[65px]
-                            md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]">
+                            <label htmlFor="image4" className="w-[75px] h-[75px] md:w-[100px] md:h-[100px] cursor-pointer">
                                 <img src={!image4 ? uploadImg : URL.createObjectURL(image4)}
                                  alt="" 
-                                 className="w-[80%] h-[80%] rounded-lg shadow-2xl
-                                 hover:border-[#1d1d1d] border-[2px]"/>
+                                 className="w-full h-full object-cover rounded-xl shadow-md border-2 border-dashed border-gray-300 hover:border-orange-500 bg-white/70 p-1 transition-colors"/>
                                 <input type="file" id='image4'
                                 hidden
                                 onChange={(e)=>setImage4(e.target.files[0])}
@@ -136,40 +123,36 @@ function Add() {
                             </label>
                         </div>
 
-                        <div className="w-[80%] h-[100px] flex items-start
-                        justify-center flex-col gap-[10px]">
-                            <p className="text-[20px] md:text-[25px] font-semibold">
+                        <div className="w-[80%] flex items-start justify-center flex-col gap-[8px]">
+                            <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">
                                 Product Name
                             </p>
                             <input type="text" placeholder="Type here"
-                            className="w-[600px] max-w-[98%] h-[40px] rounded-lg
-                            hover:border-[#46d1f7] border-[2px] cursor-pointer
-                            bg-slate-600 px-[20px] text-[18px] placeholder:text-[#ffffffc2]"
+                            className="w-[600px] max-w-[98%] h-[44px] rounded-lg
+                            border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none
+                            bg-white px-[15px] text-[16px] text-gray-800 placeholder:text-gray-400 shadow-sm transition-all"
                             onChange={(e)=>setName(e.target.value)} value={name}
                             required />
                         </div>
 
-                        <div className="w-[80%] flex items-start
-                        justify-center flex-col gap-[10px]">
-                            <p className="text-[20px] md:text-[25px] font-semibold">
+                        <div className="w-[80%] flex items-start justify-center flex-col gap-[8px]">
+                            <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">
                                 Product Description
                             </p>
                             <textarea type="text" placeholder="Type here"
-                            className="w-[600px] max-w-[98%] h-[100%] rounded-lg
-                            hover:border-[#46d1f7] border-[2px] cursor-pointer
-                            bg-slate-600 px-[20px] py-[10px] text-[18px] placeholder:text-[#ffffffc2]"
+                            className="w-[600px] max-w-[98%] h-[100px] rounded-lg
+                            border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none
+                            bg-white px-[15px] py-[10px] text-[16px] text-gray-800 placeholder:text-gray-400 shadow-sm transition-all"
                             onChange={(e)=>setDescription(e.target.value)} value={description}
                             required />
                         </div>
-                        <div className="w-[85%] flex items-center
-                        gap-[10px] flex-wrap">
-                            <div className="md:w-[30%] w-[100%] flex items-start
-                            sm:justify-center flex-col gap-[10px] ">
-                                <p className="text-[20px] md:text-[25px] font-semibold">
+                        <div className="w-[85%] flex items-center gap-[20px] flex-wrap">
+                            <div className="md:w-[30%] w-[100%] flex items-start sm:justify-center flex-col gap-[8px]">
+                                <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">
                                     Product Category
                                 </p>
-                                <select name="" id="" className="bg-slate-600 w-[60%] px-[10px]
-                                py-[7px] rounded-lg hover:border-[#46d1f7]"
+                                <select name="" id="" className="bg-white border border-gray-300 w-[70%] px-[12px]
+                                py-[9px] rounded-lg text-gray-800 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none shadow-sm cursor-pointer"
                                 onChange={(e)=>setCategory(e.target.value)} value={category}
                                 required>
                                     <option value="Men">Men</option>
@@ -178,13 +161,12 @@ function Add() {
                                 </select>
                             </div>
 
-                            <div className="md:w-[30%] w-[100%] flex items-start
-                            sm:justify-center flex-col gap-[10px]">
-                                <p className="text-[20px] md:text-[25px] font-semibold">
+                            <div className="md:w-[30%] w-[100%] flex items-start sm:justify-center flex-col gap-[8px]">
+                                <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">
                                     Sub-Category
                                 </p>
-                                <select name="" id="" className="bg-slate-600 w-[60%] px-[10px]
-                                py-[7px] rounded-lg hover:border-[#46d1f7]"
+                                <select name="" id="" className="bg-white border border-gray-300 w-[70%] px-[12px]
+                                py-[9px] rounded-lg text-gray-800 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none shadow-sm cursor-pointer"
                                 onChange={(e)=>setSubCategory(e.target.value)} value={subCategory}
                                 required>
                                     <option value="TopWear">Top Wear</option>
@@ -194,29 +176,31 @@ function Add() {
                             </div>
                         </div>
 
-                        <div className="w-[80%] h-[100px] flex items-start
-                        justify-center flex-col gap-[10px]">
-                            <p className="text-[20px] md:text-[25px] font-semibold">
+                        <div className="w-[80%] flex items-start justify-center flex-col gap-[8px]">
+                            <p className="text-[18px] md:text-[22px] font-semibold text-gray-800">
                                 Product Price
                             </p>
-                            <input type="number" placeholder="&#8377;2000"
-                            className="w-[600px] max-w-[98%] h-[40px] rounded-lg
-                            hover:border-[#46d1f7] border-[2px] cursor-pointer
-                            bg-slate-600 px-[20px] text-[18px] placeholder:text-[#ffffffc2]"
+                            <input type="number" placeholder="₹2000"
+                            className="w-[600px] max-w-[98%] h-[44px] rounded-lg
+                            border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 outline-none
+                            bg-white px-[15px] text-[16px] text-gray-800 placeholder:text-gray-400 shadow-sm transition-all"
                             onChange={(e)=>setPrice(e.target.value)} value={price}
                             required />
                         </div>
 
-                        <div className='w-[80%] h-[220px] md:h-[100px] flex items-start justify-center flex-col gap-[10px] py-[10px] md:py-[0px]'>
-                            <p className='text-[20px] md:text-[25px] font-semibold'>Product Size</p>
+                        <div className='w-[80%] flex items-start justify-center flex-col gap-[10px] py-[10px]'>
+                            <p className='text-[18px] md:text-[22px] font-semibold text-gray-800'>Product Size</p>
 
-                            <div className='flex items-center justify-start gap-[15px] flex-wrap'>
+                            <div className='flex items-center justify-start gap-[12px] flex-wrap'>
 
                                 {["S", "M", "L", "XL", "XXL"].map((size) => (
                                     <div
                                         key={size}
-                                        className={`px-[20px] py-[7px] rounded-lg bg-slate-600 text-[18px] hover:border-[#46d1f7] border-[2px] cursor-pointer ${sizes.includes(size) ? "bg-green-200 text-black border-[#46d1f7]" : ""
-                                            }`}
+                                        className={`px-[18px] py-[8px] rounded-lg text-[16px] font-medium border border-gray-300 cursor-pointer transition-all shadow-sm ${
+                                            sizes.includes(size)
+                                                ? "bg-orange-500 text-white border-orange-500 shadow-orange-200"
+                                                : "bg-white text-gray-700 hover:border-orange-400"
+                                        }`}
                                         onClick={() =>
                                             setSizes((prev) =>
                                                 prev.includes(size)
@@ -231,23 +215,23 @@ function Add() {
                             </div>
                         </div>
 
-                        <div className='w-[80%] flex items-center justify-start gap-[10px] mt-[20px]'>
+                        <div className='w-[80%] flex items-center justify-start gap-[10px] mt-[10px]'>
                             <input
                                 type="checkbox"
                                 id='checkbox'
                                 checked={bestseller}
                                 onChange={(e) => setBestSeller(e.target.checked)}
-                                className='w-[25px] h-[25px] cursor-pointer'
+                                className='w-[20px] h-[20px] accent-orange-500 cursor-pointer'
                             />
                             <label
                                 htmlFor="checkbox"
-                                className='text-[18px] md:text-[22px] font-semibold'
+                                className='text-[16px] md:text-[18px] font-semibold text-gray-800 cursor-pointer'
                             >
                                 Add to BestSeller
                             </label>
                         </div>
 
-                        <button className='w-[140px] px-[20px] py-[20px] rounded-xl bg-[#65d8f7] flex items-center justify-center gap-[10px] text-black active:bg-slate-700 active:text-white active:border-[2px] border-white'>
+                        <button className='w-[160px] py-[12px] px-[20px] rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold flex items-center justify-center gap-[10px] shadow-md transition-colors cursor-pointer mt-2'>
                             {loading ? <Loading/> : 'Add Product'} 
                         </button>
 
