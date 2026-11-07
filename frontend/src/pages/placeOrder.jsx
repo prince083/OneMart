@@ -129,27 +129,27 @@ function PlaceOrder() {
     }
 
     return (
-        <div className='w-[100vw] min-h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] flex items-center justify-center flex-col md:flex-row gap-[50px] relative'>
+        <div className='w-[100vw] min-h-[100vh] bg-gradient-to-l from-blue-400 to-white flex items-center justify-center flex-col md:flex-row gap-[50px] relative'>
             <div className='lg:w-[50%] w-[100%] h-[100%] flex items-center justify-center lg:mt-[0px] mt-[90px] '>
                 <form onSubmit={onSubmitHandler} className='lg:w-[70%] w-[95%] lg:h-[70%] h-[100%]'>
                     <div className='py-[10px] mt-[50px]'>
                         <Title text1={'DELIVERY'} text2={'ADDRESS'} />
                     </div>
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="text" placeholder='First name' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="text" placeholder='First name' className='w-[48%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='firstName'
                             value={formData.firstName} />
 
-                        <input type="text" placeholder='Last name' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
+                        <input type="text" placeholder='Last name' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-400 placeholder:text-[white] text-[18px] px-[20px]'
                             required
                             onChange={onChangeHandler}
                             name='lastName'
                             value={formData.lastName} />
                     </div>
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="email" placeholder='Enter Your email' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="email" placeholder='Enter Your email' className='w-[100%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='email'
@@ -157,7 +157,7 @@ function PlaceOrder() {
                     </div>
                     {/* 💡 New: Street address row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="text" placeholder='Street' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="text" placeholder='Street' className='w-[100%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='street'
@@ -166,13 +166,13 @@ function PlaceOrder() {
 
                     {/* 💡 New: City / State row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="text" placeholder='City' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="text" placeholder='City' className='w-[48%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='city'
                             value={formData.city} />
 
-                        <input type="text" placeholder='State' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
+                        <input type="text" placeholder='State' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-400 placeholder:text-[white] text-[18px] px-[20px]'
                             required
                             onChange={onChangeHandler}
                             name='state'
@@ -181,13 +181,13 @@ function PlaceOrder() {
 
                     {/* 💡 New: Pincode / Country row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="text" placeholder='Pincode' className='w-[48%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="text" placeholder='Pincode' className='w-[48%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='pincode'
                             value={formData.pincode} />
 
-                        <input type="text" placeholder='Country' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-700 placeholder:text-[white] text-[18px] px-[20px]'
+                        <input type="text" placeholder='Country' className='w-[48%] h-[50px] rounded-md shadow-sm shadow-[#343434] bg-slate-400 placeholder:text-[white] text-[18px] px-[20px]'
                             required
                             onChange={onChangeHandler}
                             name='country'
@@ -196,17 +196,17 @@ function PlaceOrder() {
 
                     {/* 💡 New: Phone row */}
                     <div className='w-[100%] h-[70px] flex items-center justify-between px-[10px]'>
-                        <input type="tel" placeholder='Phone' className='w-[100%] h-[50px] rounded-md bg-slate-700 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
+                        <input type="tel" placeholder='Phone' className='w-[100%] h-[50px] rounded-md bg-slate-400 placeholder:text-[white] text-[18px] px-[20px] shadow-sm shadow-[#343434]'
                             required
                             onChange={onChangeHandler}
                             name='phone'
                             value={formData.phone} />
                     </div>
                     {/* 💡 New: Submit Button for "Place Order" */}
-                    <div className='w-[100%] px-[10px] mt-[20px]'>
+                    <div className='w-[100%] px-[10px] mt-[25px]'>
                         <button
                             type="submit"
-                            className='bg-blue-600 hover:bg-blue-700 text-white text-[18px] py-[10px] px-[50px] rounded-2xl flex items-center justify-center gap-[20px] absolute lg:right-[20%] bottom-[10%] right-[35%] border-[1px] border-[#80808049] ml-[30px] mt-[20px]'
+                            className='bg-blue-600 hover:bg-blue-700 text-white text-[18px] py-[10px] px-[50px] rounded-2xl flex items-center justify-center gap-[20px] absolute lg:right-[20%] bottom-[5%] right-[35%] border-[1px] border-[#80808049] ml-[30px] mt-[20px]'
                         >
                             Place Order
                         </button>
@@ -216,7 +216,7 @@ function PlaceOrder() {
             <div className='lg:w-[50%] w-[100%] min-h-[100%] flex items-center justify-center gap-[30px] '>
                 <div className='lg:w-[70%] w-[90%] lg:h-[70%] h-[100%] flex items-center justify-center gap-[10px] flex-col'>
                     <CartTotal />
-                    <div className='py-[10px]'>
+                    <div>
                         <Title text1={'Payment'} text2={'Method'} />
                     </div>
                     <div className='w-[100%] h-[30vh] lg:h-[100px] flex items-start mt-[20px] lg:mt-[0px] justify-center gap-[50px]'>
