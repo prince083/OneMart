@@ -22,7 +22,7 @@ console.log("🔥 CORS middleware LOADED");
 // ⭐ FINAL WORKING CORS MIDDLEWARE (Only this — no cors())
 const allowedOrigins = [
   "https://onemart-ecom.onrender.com",
-  "https://onemart-admindashboard.onrender.com",
+  "https://onemart-admin.onrender.com/",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://172.16.5.169:5173", // Added for local mobile testing
